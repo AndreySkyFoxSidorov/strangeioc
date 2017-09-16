@@ -135,16 +135,16 @@ public class View : MonoBehaviour, IView
 				return;
 			}
 		}
-            if (requiresContext && !finalTry && !toAdd)
-            {
-                //last ditch. If there's a Context anywhere, we'll use it!
-                if (Context.firstContext != null)
-                {
-                    Context.firstContext.RemoveView(view);
-                    return;
-                }
-            }
-        }
-    }
+		if( requiresContext && !finalTry && !toAdd )
+		{
+			//last ditch. If there's a Context anywhere, we'll use it!
+			if( Context.firstContext != null )
+			{
+				Context.firstContext.RemoveView( view );
+				return;
+			}
+		}
+	}
+}
 }
 
