@@ -16,9 +16,9 @@
 
 /**
  * @interface strange.extensions.reflector.api.IReflectedClass
- * 
+ *
  * Interface for representation of a class.
- * 
+ *
  * A reflection represents the already-reflected class, complete with the preferred
  * constructor, the constructor parameters, post-constructor(s) and settable
  * values.
@@ -30,38 +30,37 @@ using System.Reflection;
 
 namespace strange.extensions.reflector.api
 {
-	public interface IReflectedClass
-	{
-		/// Get/set the preferred constructor
-		ConstructorInfo Constructor{ get; set;}
+public interface IReflectedClass
+{
+	/// Get/set the preferred constructor
+	ConstructorInfo Constructor{ get; set;}
 
-		/// Get/set the preferred constructor's list of parameters
-		Type[] ConstructorParameters{ get; set;}
-		object[] ConstructorParameterNames { get; set; }
+	/// Get/set the preferred constructor's list of parameters
+	Type[] ConstructorParameters{ get; set;}
 
-		/// Get/set any PostConstructors. This includes inherited PostConstructors.
-		MethodInfo[] PostConstructors{ get; set;}
+	/// Get/set any PostConstructors. This includes inherited PostConstructors.
+	MethodInfo[] PostConstructors{ get; set;}
 
-		/// Get/set the list of setter injections. This includes inherited setters.
-		KeyValuePair<Type, PropertyInfo>[] Setters{ get; set;}
-		object[] SetterNames{ get; set;}
+	/// Get/set the list of setter injections. This includes inherited setters.
+	KeyValuePair<Type, PropertyInfo>[] Setters{ get; set;}
+	object[] SetterNames{ get; set;}
 
-		/// For testing. Allows a unit test to assert whether the binding was
-		/// generated on the current call, or on a prior one.
-		bool PreGenerated{ get; set;}
+	/// For testing. Allows a unit test to assert whether the binding was
+	/// generated on the current call, or on a prior one.
+	bool PreGenerated{ get; set;}
 
-		/// [Obsolete"Strange migration to conform to C# guidelines. Removing camelCased publics"]
-		ConstructorInfo constructor{ get; set;}
-		/// [Obsolete"Strange migration to conform to C# guidelines. Removing camelCased publics"]
-		Type[] constructorParameters{ get; set;}
-		/// [Obsolete"Strange migration to conform to C# guidelines. Removing camelCased publics"]
-		MethodInfo[] postConstructors{ get; set;}
-		/// [Obsolete"Strange migration to conform to C# guidelines. Removing camelCased publics"]
-		KeyValuePair<Type, PropertyInfo>[] setters{ get; set;}
-		/// [Obsolete"Strange migration to conform to C# guidelines. Removing camelCased publics"]
-		object[] setterNames{ get; set;}
-		/// [Obsolete"Strange migration to conform to C# guidelines. Removing camelCased publics"]
-		bool preGenerated{ get; set;}
-	}
+	/// [Obsolete"Strange migration to conform to C# guidelines. Removing camelCased publics"]
+	ConstructorInfo constructor{ get; set;}
+	/// [Obsolete"Strange migration to conform to C# guidelines. Removing camelCased publics"]
+	Type[] constructorParameters{ get; set;}
+	/// [Obsolete"Strange migration to conform to C# guidelines. Removing camelCased publics"]
+	MethodInfo[] postConstructors{ get; set;}
+	/// [Obsolete"Strange migration to conform to C# guidelines. Removing camelCased publics"]
+	KeyValuePair<Type, PropertyInfo>[] setters{ get; set;}
+	/// [Obsolete"Strange migration to conform to C# guidelines. Removing camelCased publics"]
+	object[] setterNames{ get; set;}
+	/// [Obsolete"Strange migration to conform to C# guidelines. Removing camelCased publics"]
+	bool preGenerated{ get; set;}
+}
 }
 

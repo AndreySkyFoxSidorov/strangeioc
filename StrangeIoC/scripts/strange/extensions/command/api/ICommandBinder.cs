@@ -16,13 +16,13 @@
 
 /**
  * @interface strange.extensions.command.api.ICommandBinder
- * 
+ *
  * Interface for a Binder that triggers the instantiation of Commands.
- * 
+ *
  * Commands are where the logic of your application belongs.
  * These Commands typically focus on a single function, such as
  * adding a View, requesting a service, reading from or saving to a model.
- * 
+ *
  * The act of binding events to Commands means that code needn't know
  * anything about an event recipient, or even how the event will be used.
  * For example, a Mediator might send out an event that two View objects
@@ -32,11 +32,11 @@
  * example means one Command or three is up to your coding preference...
  * CommandBinder can trigger one Command or multiple Commands off the
  * same event.
- * 
+ *
  * Note that CommandBinder also a features sequencing. By default, CommandBinder fires all
  * Commands in parallel. If your binding specifies `InSequence()`,  commands will run serially,
  * with the option of suspending the chain at any time.
- * 
+ *
  * Example bindings:
 
 		Bind("someEvent").To<SomeCommand>(); //Works, but poor form to use strings. Use the next example instead
@@ -47,7 +47,7 @@
 
 		Bind(EventMap.END_GAME_EVENT).To<FirstCommand>().To<SecondCommand>().To<ThirdGCommand>().InSequence();
 
- * 
+ *
  * See Command for details on asynchronous Commands and cancelling sequences.
  */
 
@@ -57,30 +57,31 @@ using strange.framework.api;
 
 namespace strange.extensions.command.api
 {
-	public interface ICommandBinder : IBinder
-	{
+public interface ICommandBinder :
+IBinder
+{
 
-		/// Trigger a key that unlocks one or more Commands
-		void ReactTo (object trigger);
+	/// Trigger a key that unlocks one or more Commands
+	void ReactTo( object trigger );
 
-		/// Trigger a key that unlocks one or more Commands and provide a data injection to that Command
-		void ReactTo (object trigger, object data);
+	/// Trigger a key that unlocks one or more Commands and provide a data injection to that Command
+	void ReactTo( object trigger, object data );
 
-		/// Release a previously retained Command.
-		/// By default, a Command is garbage collected at the end of its `Execute()` method. 
-		/// But the Command can be retained for asynchronous calls.
-		void ReleaseCommand(ICommand command);
+	/// Release a previously retained Command.
+	/// By default, a Command is garbage collected at the end of its `Execute()` method.
+	/// But the Command can be retained for asynchronous calls.
+	void ReleaseCommand( ICommand command );
 
-		/// Called to halt execution of a currently running command group
-		void Stop(object key);
+	/// Called to halt execution of a currently running command group
+	void Stop( object key );
 
-		/// Bind a trigger Key by generic Type
-		new ICommandBinding Bind<T>();
+	/// Bind a trigger Key by generic Type
+	new ICommandBinding Bind<T>();
 
-		/// Bind a trigger Key by value
-		new ICommandBinding Bind(object value);
+	/// Bind a trigger Key by value
+	new ICommandBinding Bind( object value );
 
-		new ICommandBinding GetBinding<T>();
-	}
+	new ICommandBinding GetBinding<T>();
+}
 }
 

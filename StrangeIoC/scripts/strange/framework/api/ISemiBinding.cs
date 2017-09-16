@@ -16,9 +16,9 @@
 
 /**
  * @interface strange.framework.api.ISemiBinding
- * 
+ *
  * A managed list of values.
- * 
+ *
  * A SemiBinding is the smallest atomic part of the strange framework. It represents
  * either the Key or the Value or the Name arm of the binding.
  * <br />
@@ -33,7 +33,7 @@
  *  <li>Value - MANY</li>
  *  <li>Name - ONE</li>
  * </ul>
- * 
+ *
  * @see strange.framework.api.BindingConstraintType
  */
 
@@ -41,13 +41,14 @@ using System;
 
 namespace strange.framework.api
 {
-	public interface ISemiBinding : IManagedList
-	{
-		/// Set or get the constraint. 
-		Enum constraint{ get; set;}
+public interface ISemiBinding :
+IManagedList
+{
+	/// Set or get the constraint.
+	Enum constraint{ get; set;}
 
-		/// A secondary constraint that ensures that this SemiBinding will never contain multiple values equivalent to each other. 
-		bool uniqueValues{get;set;}
-	}
+	/// A secondary constraint that ensures that this SemiBinding will never contain multiple values equivalent to each other.
+	bool uniqueValues{get; set;}
+}
 }
 

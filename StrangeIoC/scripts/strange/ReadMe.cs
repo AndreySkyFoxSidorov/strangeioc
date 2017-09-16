@@ -46,10 +46,10 @@
  * <br />
  * User's manual: <a href="../../TheBigStrangeHowTo.html">here</a>.
  * <br />
- * Already know RobotLegs? Good news, we've written <a href="../../rl.html">this page</a> just for you! 
- * 
+ * Already know RobotLegs? Good news, we've written <a href="../../rl.html">this page</a> just for you!
+ *
  * StrangeIoC is a project by <a href="http://thirdmotion.com/">ThirdMotion, Inc.</a>
  * &copy; 2013 ThirdMotion, Inc.
- * 
+ *
  * StrangeIoC is open sourced under the <a href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache 2 license</a>.
  */

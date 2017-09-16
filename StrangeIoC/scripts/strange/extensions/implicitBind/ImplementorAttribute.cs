@@ -23,9 +23,9 @@ using strange.extensions.injector.api;
 /// Passing an Interface binds to that interface
 /// Implements overrides ImplementedBy
 /// </summary>
-[AttributeUsage(AttributeTargets.Class, 
-				AllowMultiple = true,
-				Inherited = true)]
+[AttributeUsage( AttributeTargets.Class,
+				 AllowMultiple = true,
+				 Inherited = true )]
 public class Implements: Attribute
 {
 	/// <summary>
@@ -37,14 +37,23 @@ public class Implements: Attribute
 	/// Concretely bind to own type and specify scope
 	/// </summary>
 	/// <param name="scope"></param>
-	public Implements(InjectionBindingScope scope) { Scope = scope; }
+	public Implements( InjectionBindingScope scope )
+	{
+		Scope = scope;
+	}
 
 	/// <summary>
 	/// Bind to an interface, specify the scope if necessary
 	/// </summary>
 	/// <param name="t">Interface to bind to</param>
 	/// <param name="scope">Single Context(default) or Cross Context.</param>
-	public Implements(Type t, InjectionBindingScope scope = InjectionBindingScope.SINGLE_CONTEXT)
+	public Implements( Type t )
+	{
+		DefaultInterface = t;
+		Scope = InjectionBindingScope.SINGLE_CONTEXT;
+	}
+
+	public Implements( Type t, InjectionBindingScope scope )
 	{
 		DefaultInterface = t;
 		Scope = scope;
@@ -55,7 +64,7 @@ public class Implements: Attribute
 	/// </summary>
 	/// <param name="scope"></param>
 	/// <param name="name"></param>
-	public Implements(InjectionBindingScope scope, object name)
+	public Implements( InjectionBindingScope scope, object name )
 	{
 		Scope = scope;
 		Name = name;
@@ -66,13 +75,13 @@ public class Implements: Attribute
 	/// <param name="t">Interface to bind to</param>
 	/// <param name="scope">Single Context or Cross Context</param>
 	/// <param name="name">Name to bind to</param>
-	public Implements(Type t, InjectionBindingScope scope, object name)
+	public Implements( Type t, InjectionBindingScope scope, object name )
 	{
 		DefaultInterface = t;
 		Name = name;
 		Scope = scope;
 	}
-	
+
 	public object Name {get; set;}
 	public Type DefaultInterface { get; set; }
 	public InjectionBindingScope Scope { get; set; }
@@ -82,9 +91,9 @@ public class Implements: Attribute
 /// Declares an interface to have an implicit implementor
 /// An Implements tag for the given interface overrides this tag.
 /// </summary>
-[AttributeUsage(AttributeTargets.Interface,
-				AllowMultiple = false,
-				Inherited = true)]
+[AttributeUsage( AttributeTargets.Interface,
+				 AllowMultiple = false,
+				 Inherited = true )]
 public class ImplementedBy : Attribute
 {
 	/// <summary>
@@ -92,7 +101,12 @@ public class ImplementedBy : Attribute
 	/// </summary>
 	/// <param name="t">Default Type</param>
 	/// <param name="scope">Single Context(default) or Cross Context</param>
-	public ImplementedBy(Type t, InjectionBindingScope scope = InjectionBindingScope.SINGLE_CONTEXT)
+	public ImplementedBy( Type t )
+	{
+		DefaultType = t;
+		Scope = InjectionBindingScope.SINGLE_CONTEXT;
+	}
+	public ImplementedBy( Type t, InjectionBindingScope scope )
 	{
 		DefaultType = t;
 		Scope = scope;
@@ -105,16 +119,19 @@ public class ImplementedBy : Attribute
 /// <summary>
 /// Declares a View class implicity mediated by one or more named Mediators
 /// </summary>
-[AttributeUsage(AttributeTargets.Class,
-				AllowMultiple = true,
-				Inherited = true)]
+[AttributeUsage( AttributeTargets.Class,
+				 AllowMultiple = true,
+				 Inherited = true )]
 public class MediatedBy : Attribute
 {
 	/// <summary>
 	/// Bind this view to a Mediator
 	/// </summary>
 	/// <param name="t">Mediator Type</param>
-	public MediatedBy(Type t) { MediatorType = t; }
+	public MediatedBy( Type t )
+	{
+		MediatorType = t;
+	}
 
 	public Type MediatorType { get; set; }
 }
@@ -122,16 +139,19 @@ public class MediatedBy : Attribute
 /// <summary>
 /// Declare a Mediator class implicitly bound to a provided View
 /// </summary>
-[AttributeUsage(AttributeTargets.Class,
-				AllowMultiple = false,
-				Inherited = true)]
+[AttributeUsage( AttributeTargets.Class,
+				 AllowMultiple = false,
+				 Inherited = true )]
 public class Mediates : Attribute
 {
 	/// <summary>
 	/// Bind this Mediator to a view
 	/// </summary>
 	/// <param name="t">View Type</param>
-	public Mediates(Type t) { ViewType = t; }
+	public Mediates( Type t )
+	{
+		ViewType = t;
+	}
 
 	public Type ViewType { get; set; }
 }

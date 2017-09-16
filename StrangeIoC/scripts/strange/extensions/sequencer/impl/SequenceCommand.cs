@@ -16,11 +16,11 @@
 
 /**
  * @class strange.extensions.sequencer.impl.SequenceCommand
- * 
+ *
  * @deprecated
- * 
+ *
  * @see strange.extensions.command.api.ICommand
- */ 
+ */
 
 using System;
 using strange.extensions.command.impl;
@@ -29,36 +29,36 @@ using strange.extensions.sequencer.api;
 
 namespace strange.extensions.sequencer.impl
 {
-	public class SequenceCommand : Command, ISequenceCommand
+public class SequenceCommand : Command, ISequenceCommand
+{
+	[Inject]
+	public ISequencer sequencer { get; set;}
+
+	public SequenceCommand()
 	{
-		[Inject]
-		public ISequencer sequencer{ get; set;}
+	}
 
-		public SequenceCommand ()
+	new public void Fail()
+	{
+		if( sequencer != null )
 		{
-		}
-
-		new public void Fail ()
-		{
-			if (sequencer != null)
-			{
-				sequencer.Stop (this);
-			}
-		}
-
-		new virtual public void Execute ()
-		{
-			throw new SequencerException ("You must override the Execute method in every SequenceCommand", SequencerExceptionType.EXECUTE_OVERRIDE);
-		}
-
-		new public void Release ()
-		{
-			retain = false;
-			if (sequencer != null)
-			{
-				sequencer.ReleaseCommand (this);
-			}
+			sequencer.Stop( this );
 		}
 	}
+
+	new virtual public void Execute()
+	{
+		throw new SequencerException( "You must override the Execute method in every SequenceCommand", SequencerExceptionType.EXECUTE_OVERRIDE );
+	}
+
+	new public void Release()
+	{
+		retain = false;
+		if( sequencer != null )
+		{
+			sequencer.ReleaseCommand( this );
+		}
+	}
+}
 }
 

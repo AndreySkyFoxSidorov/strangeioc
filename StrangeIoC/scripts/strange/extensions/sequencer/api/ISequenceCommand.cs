@@ -16,21 +16,22 @@
 
 /**
  * @interface strange.extensions.sequencer.api.ISequenceCommand
- * 
+ *
  * @deprecated
- * 
+ *
  * @see strange.extensions.command.api.ICommand
- */ 
+ */
 
 using System;
 using strange.extensions.command.api;
 
 namespace strange.extensions.sequencer.api
 {
-	public interface ISequenceCommand : ICommand
-	{
+public interface ISequenceCommand :
+ICommand
+{
 
 
-	}
+}
 }
 

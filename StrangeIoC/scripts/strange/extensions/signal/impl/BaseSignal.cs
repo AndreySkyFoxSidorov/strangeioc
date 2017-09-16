@@ -16,9 +16,9 @@
 
 /**
  * @class strange.extensions.signal.impl.BaseSignal
- * 
+ *
  * The base class for all Signals.
- * 
+ *
  * @see strange.extensions.signal.api.IBaseSignal
  * @see strange.extensions.signal.impl.Signal
  */
@@ -29,51 +29,58 @@ using System.Collections.Generic;
 
 namespace strange.extensions.signal.impl
 {
-	public class BaseSignal : IBaseSignal
+public class BaseSignal : IBaseSignal
+{
+	/// The delegate for repeating listeners
+	public event Action<IBaseSignal, object[]> BaseListener = delegate { };
+
+	/// The delegate for one-off listeners
+	public event Action<IBaseSignal, object[]> OnceBaseListener = delegate { };
+
+	public void Dispatch( object[] args )
 	{
-        
-		/// The delegate for repeating listeners
-		public event Action<IBaseSignal, object[]> BaseListener = delegate { };
-
-		/// The delegate for one-off listeners
-		public event Action<IBaseSignal, object[]> OnceBaseListener = delegate { };
-
-		public void Dispatch(object[] args) 
-		{ 
-			BaseListener(this, args);
-			OnceBaseListener(this, args);
-			OnceBaseListener = delegate { };
-		}
-
-		public virtual List<Type> GetTypes() { return new List<Type>(); }
-
-		public void AddListener(Action<IBaseSignal, object[]> callback) 
-		{
-			foreach (Delegate del in BaseListener.GetInvocationList())
-			{
-				Action<IBaseSignal, object[]> action = (Action<IBaseSignal, object[]>)del;
-				if (callback.Equals(action)) //If this callback exists already, ignore this addlistener
-					return;
-			}
-
-			BaseListener += callback;
-		}
-
-		public void AddOnce(Action<IBaseSignal, object[]> callback)
-		{
-			foreach (Delegate del in OnceBaseListener.GetInvocationList())
-			{
-				Action<IBaseSignal, object[]> action = (Action<IBaseSignal, object[]>)del;
-				if (callback.Equals(action)) //If this callback exists already, ignore this addlistener
-					return;
-			}
-
-			OnceBaseListener += callback;
-		}
-
-		public void RemoveListener(Action<IBaseSignal, object[]> callback) { BaseListener -= callback; }
-
-	   
+		BaseListener( this, args );
+		OnceBaseListener( this, args );
+		OnceBaseListener = delegate { };
 	}
+
+	public virtual List<Type> GetTypes()
+	{
+		return new List<Type>();
+	}
+
+	public void AddListener( Action<IBaseSignal, object[]> callback )
+	{
+		foreach( Delegate del in BaseListener.GetInvocationList() )
+		{
+			Action<IBaseSignal, object[]> action = ( Action<IBaseSignal, object[]> )del;
+			if( callback.Equals( action ) ) //If this callback exists already, ignore this addlistener
+			{
+				return;
+			}
+		}
+
+		BaseListener += callback;
+	}
+
+	public void AddOnce( Action<IBaseSignal, object[]> callback )
+	{
+		foreach( Delegate del in OnceBaseListener.GetInvocationList() )
+		{
+			Action<IBaseSignal, object[]> action = ( Action<IBaseSignal, object[]> )del;
+			if( callback.Equals( action ) ) //If this callback exists already, ignore this addlistener
+			{
+				return;
+			}
+		}
+		OnceBaseListener += callback;
+	}
+
+	public void RemoveListener( Action<IBaseSignal, object[]> callback )
+	{
+		BaseListener -= callback;
+	}
+
+}
 }
 

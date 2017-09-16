@@ -16,7 +16,7 @@
 
 /**
  * @class strange.extensions.injector.impl.InjectorFactory
- * 
+ *
  * The Factory that instantiates all instances.
  */
 
@@ -25,112 +25,145 @@ using strange.extensions.injector.api;
 
 namespace strange.extensions.injector.impl
 {
-	public class InjectorFactory : IInjectorFactory
+public class InjectorFactory : IInjectorFactory
+{
+
+	public InjectorFactory()
 	{
+	}
 
-		public InjectorFactory ()
+	public object Get( IInjectionBinding binding, object[] args )
+	{
+		if( binding == null )
 		{
+			throw new InjectionException( "InjectorFactory cannot act on null binding", InjectionExceptionType.NULL_BINDING );
+		}
+		InjectionBindingType type = binding.type;
+
+		switch( type )
+		{
+		case InjectionBindingType.SINGLETON:
+			return singletonOf( binding, args );
+		case InjectionBindingType.VALUE:
+			return valueOf( binding );
+		default:
+			break;
 		}
 
-		public object Get(IInjectionBinding binding, object[] args)
+		return instanceOf( binding, args );
+	}
+
+	public object Get( IInjectionBinding binding )
+	{
+		return Get( binding, null );
+	}
+
+	/// Generate a Singleton instance
+	protected object singletonOf( IInjectionBinding binding, object[] args )
+	{
+		if( binding.value != null )
 		{
-			if (binding == null)
+			if( binding.value.GetType().IsInstanceOfType( typeof( Type ) ) )
 			{
-				throw new InjectionException ("InjectorFactory cannot act on null binding", InjectionExceptionType.NULL_BINDING);
-			}
-			InjectionBindingType type = binding.type;
-
-			switch (type)
-			{
-				case InjectionBindingType.SINGLETON:
-					return singletonOf (binding, args);
-				case InjectionBindingType.VALUE:
-					return valueOf (binding);
-				default:
-					break;
-			}
-
-			return instanceOf (binding, args);
-		}
-
-		public object Get(IInjectionBinding binding)
-		{
-			return Get (binding, null);
-		}
-
-		/// Generate a Singleton instance
-		protected object singletonOf(IInjectionBinding binding, object[] args)
-		{
-			if (binding.value != null)
-			{
-				if (binding.value.GetType().IsInstanceOfType(typeof(Type)))
+				object o = createFromValue( binding.value, args );
+				if( o == null )
 				{
-					object o = createFromValue (binding.value, args);
-					if (o == null)
-						return null;
-					binding.SetValue(o);
+					return null;
 				}
-				else
-				{
-					//no-op. We already have a binding value!
-				}
+				binding.SetValue( o );
 			}
 			else
 			{
-				binding.SetValue(generateImplicit((binding.key as object[])[0], args));
+				//no-op. We already have a binding value!
 			}
-			return binding.value;
 		}
-
-		protected object generateImplicit(object key, object[] args)
+		else
 		{
-			Type type = key as Type;
-			if (!type.IsInterface && !type.IsAbstract)
+			object generateImplicitValue = generateImplicit( ( binding.key as object[] )[0], args );
+			if( generateImplicitValue != null )
 			{
-				return createFromValue(key, args);
+				binding.SetValue( generateImplicitValue );
 			}
-			throw new InjectionException ("InjectorFactory can't instantiate an Interface or Abstract Class. Class: " + key.ToString(), InjectionExceptionType.NOT_INSTANTIABLE);
-		}
-
-		/// The binding already has a value. Simply return it.
-		protected object valueOf(IInjectionBinding binding)
-		{
-			return binding.value;
-		}
-
-		/// Generate a new instance
-		protected object instanceOf(IInjectionBinding binding, object[] args)
-		{
-			if (binding.value != null)
+			else
 			{
-				return createFromValue(binding.value, args);
+				UnityEngine.Debug.LogError( "IInjectionBinding generateImplicit object == NULL" );
 			}
-			object value = generateImplicit ((binding.key as object[]) [0], args);
-			return createFromValue(value, args);
 		}
+		return binding.value;
+	}
 
-		/// Call the Activator to attempt instantiation the given object
-		protected object createFromValue(object o, object[] args)
+	protected object generateImplicit( object key, object[] args )
+	{
+		Type type = key as Type;
+		if( !type.IsInterface && !type.IsAbstract )
 		{
-			Type value = (o is Type) ? o as Type : o.GetType ();
-			object retv = null;
-			try
+			object retValue = createFromValue( key, args );
+			if( retValue != null )
 			{
-				if (args == null || args.Length == 0)
+				return retValue;
+			}
+			else
+			{
+				if( key != null )
 				{
-					retv = Activator.CreateInstance (value);
+					UnityEngine.Debug.LogError( "generateImplicit object == NULL name:"+key.ToString() );
+				}
+				if( args != null )
+				{
+					if( args.Length == 0 )
+					{
+						UnityEngine.Debug.LogError( "generateImplicit object == NULL args.Length" );
+					}
 				}
 				else
 				{
-					retv = Activator.CreateInstance(value, args);
+					UnityEngine.Debug.LogError( "generateImplicit args == NULL" );
 				}
+				throw new InjectionException( "InjectorFactory can't instantiate ERROR. Null Class", InjectionExceptionType.NOT_INSTANTIABLE );
 			}
-			catch
-			{
-				//No-op
-			}
-			return retv;
 		}
+		throw new InjectionException( "InjectorFactory can't instantiate an Interface or Abstract Class. Class: " + key.ToString(), InjectionExceptionType.NOT_INSTANTIABLE );
 	}
+
+	/// The binding already has a value. Simply return it.
+	protected object valueOf( IInjectionBinding binding )
+	{
+		return binding.value;
+	}
+
+	/// Generate a new instance
+	protected object instanceOf( IInjectionBinding binding, object[] args )
+	{
+		if( binding.value != null )
+		{
+			return createFromValue( binding.value, args );
+		}
+		object value = generateImplicit( ( binding.key as object[] ) [0], args );
+		return createFromValue( value, args );
+	}
+
+	/// Call the Activator to attempt instantiation the given object
+	protected object createFromValue( object o, object[] args )
+	{
+		Type value = ( o is Type ) ? o as Type : o.GetType();
+		object retv = null;
+		try
+		{
+			if( args == null || args.Length == 0 )
+			{
+				retv = Activator.CreateInstance( value );
+			}
+			else
+			{
+				retv = Activator.CreateInstance( value, args );
+			}
+		}
+		catch
+		{
+			//No-op
+		}
+		return retv;
+	}
+}
 }
 

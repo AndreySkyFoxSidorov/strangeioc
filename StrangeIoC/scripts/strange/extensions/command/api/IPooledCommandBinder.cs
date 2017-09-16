@@ -27,13 +27,13 @@ using strange.extensions.command.impl;
 
 namespace strange.extensions.command.api
 {
-	public interface IPooledCommandBinder
-	{
-		/// Retrieve the Pool of the specified type
-		Pool<T> GetPool<T>();
+public interface IPooledCommandBinder
+{
+	/// Retrieve the Pool of the specified type
+	Pool<T> GetPool<T>();
 
-		/// Switch to disable pooling for those that don't want to use it.
-		bool usePooling{ get; set; }
-	}
+	/// Switch to disable pooling for those that don't want to use it.
+	bool usePooling{ get; set; }
+}
 }
 

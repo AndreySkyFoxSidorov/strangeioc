@@ -16,9 +16,9 @@
 
 /**
  * @interface strange.extensions.mediation.api.IMediationBinder
- * 
+ *
  * Interface for the Binder which maps Views to Mediators.
- * 
+ *
  * In a general sense, mediation is the act of using one thing
  * to separate and communicate between two others. mediation
  * in Strange refers to separating Views from the rest of the
@@ -31,7 +31,7 @@
  * the View from the app around it, and vice-versa. This yields
  * components that are easier to re-use, and working Views whose
  * chaos is structurally contained.
- * 
+ *
  * The MediationBinder quite simply Binds two (or more) classes. The Key
  * is the View class, the Value is one or more Mediators. Whenever the
  * View shows up, a corresponding Mediator joins it to buffer
@@ -43,19 +43,19 @@
  * events. It is intended to be 'thin', that is, it should know just
  * enough to provide mediation. Leave logic, data storage, and View
  * behaviour to other classes.
- * 
+ *
  * In the context of Unity3D, the View is a MonoBehaviour attached
  * to a GameObject. The mediator is also a MonoBehaviour, so it has access
  * to all the usual things a MomoBehaviour would. Consider it a best
  * practice to attach only the View to your GameObject in Unity3D.
- * 
+ *
  * Finally, two words of warning.
  * First: Views may be injected. This allows you to provide a local Dispatcher,
  * a Configuration file, or other items that might come in handy. I
  * recommend very strongly that you do not inject the context-wide Dispatcher,
  * nor any other class involving the world beyond the View's immediate
  * area of interest. To do so risks negating the whole point of mediation.
- * 
+ *
  * Second: experience tells me that understanding what belongs in Mediator and
  * what in View is the trickiest part of this system. I recommend the
  * 'thin' class approach, i.e., nothing goes in the Mediator but what it needs
@@ -68,17 +68,16 @@ using UnityEngine;
 
 namespace strange.extensions.mediation.api
 {
-	public interface IMediationBinder : IBinder
-	{
-		/// An event that just happened, and the View it happened to.
-		/// If the event was Awake, it will trigger creation of a mapped Mediator.
-		void Trigger (MediationEvent evt, IView view);
+public interface IMediationBinder :
+IBinder
+{
+	/// An event that just happened, and the View it happened to.
+	/// If the event was Awake, it will trigger creation of a mapped Mediator.
+	void Trigger( MediationEvent evt, IView view );
 
-		/// Recast binding as IMediationBinding.
-		new IMediationBinding Bind<T> ();
-
-		/// Porcelain for Bind<T> providing a little extra clarity and security.
-		IMediationBinding BindView<T> () where T : MonoBehaviour;
-	}
+	/// Porcelain for Bind<T> providing a little extra clarity and security.
+IMediationBinding BindView<T> () where T :
+	MonoBehaviour;
+}
 }
 
