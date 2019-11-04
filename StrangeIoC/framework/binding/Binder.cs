@@ -32,9 +32,8 @@
  * instantiation of a particular class.
  */
 
-using System;
-using System.Collections.Generic;
 using strange.framework.api;
+using System.Collections.Generic;
 
 namespace strange.framework.impl
 {
@@ -44,25 +43,25 @@ public class Binder : IBinder
 	/// Two-layer keys. First key to individual Binding keys,
 	/// then to Binding names. (This wouldn't be required if
 	/// Unity supported Tuple or HashSet.)
-	protected Dictionary <object, Dictionary<object, IBinding>> bindings;
+	protected Dictionary<object, Dictionary<object, IBinding>> bindings;
 
-	protected Dictionary <object, Dictionary<IBinding, object>> conflicts;
+	protected Dictionary<object, Dictionary<IBinding, object>> conflicts;
 
 	/// A handler for resolving the nature of a binding during chained commands
 	public delegate void BindingResolver( IBinding binding );
 
 	public Binder()
 	{
-		bindings = new Dictionary <object, Dictionary<object, IBinding>> ();
-		conflicts = new Dictionary <object, Dictionary<IBinding, object>> ();
+		bindings = new Dictionary<object, Dictionary<object, IBinding>>();
+		conflicts = new Dictionary<object, Dictionary<IBinding, object>>();
 	}
 
-	virtual public IBinding Bind<T>()
+	public virtual IBinding Bind<T>()
 	{
 		return Bind( typeof( T ) );
 	}
 
-	virtual public IBinding Bind( object key )
+	public virtual IBinding Bind( object key )
 	{
 		IBinding binding;
 		binding = GetRawBinding();
@@ -70,22 +69,22 @@ public class Binder : IBinder
 		return binding;
 	}
 
-	virtual public IBinding GetBinding<T>()
+	public virtual IBinding GetBinding<T>()
 	{
 		return GetBinding( typeof( T ), null );
 	}
 
-	virtual public IBinding GetBinding( object key )
+	public virtual IBinding GetBinding( object key )
 	{
 		return GetBinding( key, null );
 	}
 
-	virtual public IBinding GetBinding<T>( object name )
+	public virtual IBinding GetBinding<T>( object name )
 	{
 		return GetBinding( typeof( T ), name );
 	}
 
-	virtual public IBinding GetBinding( object key, object name )
+	public virtual IBinding GetBinding( object key, object name )
 	{
 		if( conflicts.Count > 0 )
 		{
@@ -95,7 +94,7 @@ public class Binder : IBinder
 			{
 				if( conflictSummary.Length > 0 )
 				{
-					conflictSummary+= ", ";
+					conflictSummary += ", ";
 				}
 				conflictSummary += k.ToString();
 			}
@@ -104,32 +103,32 @@ public class Binder : IBinder
 
 		if( bindings.ContainsKey( key ) )
 		{
-			Dictionary<object, IBinding> dict = bindings [key];
+			Dictionary<object, IBinding> dict = bindings[key];
 			name = ( name == null ) ? BindingConst.NULLOID : name;
 			if( dict.ContainsKey( name ) )
 			{
-				return dict [name];
+				return dict[name];
 			}
 		}
 		return null;
 	}
 
-	virtual public void Unbind<T>()
+	public virtual void Unbind<T>()
 	{
 		Unbind( typeof( T ), null );
 	}
 
-	virtual public void Unbind( object key )
+	public virtual void Unbind( object key )
 	{
 		Unbind( key, null );
 	}
 
-	virtual public void Unbind<T>( object name )
+	public virtual void Unbind<T>( object name )
 	{
 		Unbind( typeof( T ), name );
 	}
 
-	virtual public void Unbind( object key, object name )
+	public virtual void Unbind( object key, object name )
 	{
 		if( bindings.ContainsKey( key ) )
 		{
@@ -142,7 +141,7 @@ public class Binder : IBinder
 		}
 	}
 
-	virtual public void Unbind( IBinding binding )
+	public virtual void Unbind( IBinding binding )
 	{
 		if( binding == null )
 		{
@@ -151,7 +150,7 @@ public class Binder : IBinder
 		Unbind( binding.key, binding.name );
 	}
 
-	virtual public void RemoveValue( IBinding binding, object value )
+	public virtual void RemoveValue( IBinding binding, object value )
 	{
 		if( binding == null || value == null )
 		{
@@ -161,10 +160,10 @@ public class Binder : IBinder
 		Dictionary<object, IBinding> dict;
 		if( ( bindings.ContainsKey( key ) ) )
 		{
-			dict = bindings [key];
+			dict = bindings[key];
 			if( dict.ContainsKey( binding.name ) )
 			{
-				IBinding useBinding = dict [binding.name];
+				IBinding useBinding = dict[binding.name];
 				useBinding.RemoveValue( value );
 
 				//If result is empty, clean it out
@@ -177,7 +176,7 @@ public class Binder : IBinder
 		}
 	}
 
-	virtual public void RemoveKey( IBinding binding, object key )
+	public virtual void RemoveKey( IBinding binding, object key )
 	{
 		if( binding == null || key == null || bindings.ContainsKey( key ) == false )
 		{
@@ -186,7 +185,7 @@ public class Binder : IBinder
 		Dictionary<object, IBinding> dict = bindings[key];
 		if( dict.ContainsKey( binding.name ) )
 		{
-			IBinding useBinding = dict [binding.name];
+			IBinding useBinding = dict[binding.name];
 			useBinding.RemoveKey( key );
 			object[] keys = useBinding.key as object[];
 			if( keys != null && keys.Length == 0 )
@@ -196,7 +195,7 @@ public class Binder : IBinder
 		}
 	}
 
-	virtual public void RemoveName( IBinding binding, object name )
+	public virtual void RemoveName( IBinding binding, object name )
 	{
 		if( binding == null || name == null )
 		{
@@ -210,24 +209,24 @@ public class Binder : IBinder
 		else
 		{
 			object[] keys = binding.key as object[];
-			key = keys [0];
+			key = keys[0];
 		}
 
 		Dictionary<object, IBinding> dict = bindings[key];
 		if( dict.ContainsKey( name ) )
 		{
-			IBinding useBinding = dict [name];
+			IBinding useBinding = dict[name];
 			useBinding.RemoveName( name );
 		}
 	}
 
-	virtual public IBinding GetRawBinding()
+	public virtual IBinding GetRawBinding()
 	{
 		return new Binding( resolver );
 	}
 
 	/// The default handler for resolving bindings during chained commands
-	virtual protected void resolver( IBinding binding )
+	protected virtual void resolver( IBinding binding )
 	{
 		object key = binding.key;
 		if( binding.keyConstraint.Equals( BindingConstraintType.ONE ) )
@@ -254,13 +253,13 @@ public class Binder : IBinder
 	 * Conflicts in the course of fluent binding are expected, but GetBinding
 	 * will throw an error if there are any unresolved conflicts.
 	 */
-	virtual public void ResolveBinding( IBinding binding, object key )
+	public virtual void ResolveBinding( IBinding binding, object key )
 	{
 
 		//Check for existing conflicts
-		if( conflicts.ContainsKey( key ) )	//does the current key have any conflicts?
+		if( conflicts.ContainsKey( key ) ) //does the current key have any conflicts?
 		{
-			Dictionary<IBinding, object> inConflict = conflicts [key];
+			Dictionary<IBinding, object> inConflict = conflicts[key];
 			if( inConflict.ContainsKey( binding ) ) //Am I on the conflict list?
 			{
 				object conflictName = inConflict[binding];
@@ -270,7 +269,7 @@ public class Binder : IBinder
 				}
 				else
 				{
-					return;	//still in conflict
+					return; //still in conflict
 				}
 			}
 		}
@@ -280,7 +279,7 @@ public class Binder : IBinder
 		Dictionary<object, IBinding> dict;
 		if( ( bindings.ContainsKey( key ) ) )
 		{
-			dict = bindings [key];
+			dict = bindings[key];
 			//Will my registration create a new conflict?
 			if( dict.ContainsKey( bindingName ) )
 			{
@@ -303,7 +302,7 @@ public class Binder : IBinder
 					// 1) if the previous binding is weak and the new binding is not weak, then the new binding replaces the previous;
 					// 2) but if the new binding is also weak, then it only replaces the previous weak binding if the previous binding
 					// has not already been instantiated:
-					if( existingBinding != binding && existingBinding.isWeak && ( !binding.isWeak || existingBinding.value==null || existingBinding.value is System.Type ) )
+					if( existingBinding != binding && existingBinding.isWeak && ( !binding.isWeak || existingBinding.value == null || existingBinding.value is System.Type ) )
 					{
 						//Remove the previous binding.
 						dict.Remove( bindingName );
@@ -314,7 +313,7 @@ public class Binder : IBinder
 		else
 		{
 			dict = new Dictionary<object, IBinding>();
-			bindings [key] = dict;
+			bindings[key] = dict;
 		}
 
 		//Remove nulloid bindings
@@ -339,15 +338,15 @@ public class Binder : IBinder
 		Dictionary<IBinding, object> dict;
 		if( conflicts.ContainsKey( key ) == false )
 		{
-			dict = new Dictionary<IBinding, object> ();
-			conflicts [key] = dict;
+			dict = new Dictionary<IBinding, object>();
+			conflicts[key] = dict;
 		}
 		else
 		{
-			dict = conflicts [key];
+			dict = conflicts[key];
 		}
-		dict [newBinding] = newBinding.name;
-		dict [existingBinding] = newBinding.name;
+		dict[newBinding] = newBinding.name;
+		dict[existingBinding] = newBinding.name;
 	}
 
 	/// Returns true if the provided binding and the binding in the dict are no longer conflicting
@@ -398,7 +397,7 @@ public class Binder : IBinder
 				mod = -1;
 				continue;
 			}
-			newList [a + mod] = ( T )objectValue [a];
+			newList[a + mod] = ( T )objectValue[a];
 		}
 		return newList;
 	}
@@ -409,7 +408,7 @@ public class Binder : IBinder
 		return spliceValueAt<object>( splicePos, objectValue );
 	}
 
-	virtual public void OnRemove() { }
+	public virtual void OnRemove() { }
 }
 }
 

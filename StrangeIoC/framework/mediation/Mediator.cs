@@ -32,7 +32,7 @@ public class Mediator : MonoBehaviour, IMediator
 {
 
 	[Inject( ContextKeys.CONTEXT_VIEW )]
-	public GameObject contextView {get; set;}
+	public GameObject contextView { get; set; }
 
 	public Mediator()
 	{
@@ -41,7 +41,7 @@ public class Mediator : MonoBehaviour, IMediator
 	/**
 	 * Fires directly after creation and before injection
 	 */
-	virtual public void PreRegister()
+	public virtual void PreRegister()
 	{
 	}
 
@@ -50,7 +50,7 @@ public class Mediator : MonoBehaviour, IMediator
 	 *
 	 * Override and place your initialization code here.
 	 */
-	virtual public void OnRegister()
+	public virtual void OnRegister()
 	{
 	}
 
@@ -59,7 +59,7 @@ public class Mediator : MonoBehaviour, IMediator
 	 *
 	 * Override and place your cleanup code here
 	 */
-	virtual public void OnRemove()
+	public virtual void OnRemove()
 	{
 	}
 }

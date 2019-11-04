@@ -14,8 +14,8 @@
  *		limitations under the License.
  */
 
-using System;
 using strange.extensions.injector.api;
+using System;
 
 /// <summary>
 /// Declares a Class to be implicitly bound.
@@ -26,12 +26,12 @@ using strange.extensions.injector.api;
 [AttributeUsage( AttributeTargets.Class,
 				 AllowMultiple = true,
 				 Inherited = true )]
-public class Implements: Attribute
+public class Implements : Attribute
 {
 	/// <summary>
 	/// Concretely bind to own type
 	/// </summary>
-	public Implements() {  }
+	public Implements() { }
 
 	/// <summary>
 	/// Concretely bind to own type and specify scope
@@ -82,7 +82,7 @@ public class Implements: Attribute
 		Scope = scope;
 	}
 
-	public object Name {get; set;}
+	public object Name { get; set; }
 	public Type DefaultInterface { get; set; }
 	public InjectionBindingScope Scope { get; set; }
 }

@@ -14,15 +14,15 @@
  *		limitations under the License.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using strange.extensions.implicitBind.api;
 using strange.extensions.injector.api;
 using strange.extensions.injector.impl;
 using strange.extensions.mediation.api;
 using strange.extensions.mediation.impl;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace strange.extensions.implicitBind.impl
 {
@@ -146,8 +146,10 @@ public class ImplicitBinder : IImplicitBinder
 					mediatorType = ( ( MediatedBy )mediated.First() ).MediatorType;
 
 					if( mediatorType == null )
+					{
 						throw new MediationException( "Cannot implicitly bind view of type: " + type.Name + " due to null MediatorType",
 													  MediationExceptionType.MEDIATOR_VIEW_STACK_OVERFLOW );
+					}
 				}
 				else if( mediates.Any() )
 				{
@@ -155,8 +157,10 @@ public class ImplicitBinder : IImplicitBinder
 					viewType = ( ( Mediates )mediates.First() ).ViewType;
 
 					if( viewType == null )
+					{
 						throw new MediationException( "Cannot implicitly bind Mediator of type: " + type.Name + " due to null ViewType",
 													  MediationExceptionType.MEDIATOR_VIEW_STACK_OVERFLOW );
+					}
 				}
 
 				if( mediationBinder != null && viewType != null && mediatorType != null ) //Bind this mediator!

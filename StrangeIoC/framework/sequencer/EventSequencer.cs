@@ -20,7 +20,6 @@
  * @deprecated
  */
 
-using System;
 using strange.extensions.dispatcher.eventdispatcher.api;
 using strange.extensions.sequencer.api;
 
@@ -33,20 +32,20 @@ public class EventSequencer : Sequencer
 	}
 
 	/// Instantiate and Inject the command, incling an IEvent to data.
-	override protected ISequenceCommand createCommand( object cmd, object data )
+	protected override ISequenceCommand createCommand( object cmd, object data )
 	{
-		injectionBinder.Bind<ISequenceCommand> ().To( cmd );
+		injectionBinder.Bind<ISequenceCommand>().To( cmd );
 		if( data is IEvent )
 		{
-			injectionBinder.Bind<IEvent> ().ToValue( data ).ToInject( false );;
+			injectionBinder.Bind<IEvent>().ToValue( data ).ToInject( false ); ;
 		}
-		ISequenceCommand command = injectionBinder.GetInstance<ISequenceCommand> () as ISequenceCommand;
+		ISequenceCommand command = injectionBinder.GetInstance<ISequenceCommand>() as ISequenceCommand;
 		command.data = data;
 		if( data is IEvent )
 		{
-			injectionBinder.Unbind<IEvent> ();
+			injectionBinder.Unbind<IEvent>();
 		}
-		injectionBinder.Unbind<ISequenceCommand> ();
+		injectionBinder.Unbind<ISequenceCommand>();
 		return command;
 	}
 }

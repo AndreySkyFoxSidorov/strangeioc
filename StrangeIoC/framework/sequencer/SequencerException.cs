@@ -20,14 +20,14 @@
  * @deprecated
  */
 
-using System;
 using strange.extensions.sequencer.api;
+using System;
 
 namespace strange.extensions.sequencer.impl
 {
 public class SequencerException : Exception
 {
-	public SequencerExceptionType type { get; set;}
+	public SequencerExceptionType type { get; set; }
 
 	public SequencerException() : base()
 	{

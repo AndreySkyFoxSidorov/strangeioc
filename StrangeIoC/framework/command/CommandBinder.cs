@@ -51,15 +51,15 @@
  * See Command for details on asynchronous Commands and cancelling sequences.
  */
 
-using System;
-using System.Collections.Generic;
 using strange.extensions.command.api;
 using strange.extensions.dispatcher.api;
 using strange.extensions.injector.api;
+using strange.extensions.pool.api;
 using strange.extensions.pool.impl;
 using strange.framework.api;
 using strange.framework.impl;
-using strange.extensions.pool.api;
+using System;
+using System.Collections.Generic;
 
 namespace strange.extensions.command.impl
 {
@@ -68,13 +68,13 @@ public class CommandBinder : Binder, ICommandBinder, IPooledCommandBinder, ITrig
 	[Inject]
 	public IInjectionBinder injectionBinder { get; set; }
 
-	protected Dictionary<Type, Pool> pools = new Dictionary<Type, Pool> ();
+	protected Dictionary<Type, Pool> pools = new Dictionary<Type, Pool>();
 
 	/// Tracker for parallel commands in progress
 	protected HashSet<ICommand> activeCommands = new HashSet<ICommand>();
 
 	/// Tracker for sequences in progress
-	protected Dictionary<ICommand, ICommandBinding> activeSequences = new Dictionary<ICommand, ICommandBinding> ();
+	protected Dictionary<ICommand, ICommandBinding> activeSequences = new Dictionary<ICommand, ICommandBinding>();
 
 	public CommandBinder()
 	{
@@ -86,12 +86,12 @@ public class CommandBinder : Binder, ICommandBinder, IPooledCommandBinder, ITrig
 		return new CommandBinding( resolver );
 	}
 
-	virtual public void ReactTo( object trigger )
+	public virtual void ReactTo( object trigger )
 	{
 		ReactTo( trigger, null );
 	}
 
-	virtual public void ReactTo( object trigger, object data )
+	public virtual void ReactTo( object trigger, object data )
 	{
 		if( data is IPoolable )
 		{
@@ -122,7 +122,7 @@ public class CommandBinder : Binder, ICommandBinder, IPooledCommandBinder, ITrig
 
 		if( values != null && depth < values.Length )
 		{
-			Type cmd = values [depth] as Type;
+			Type cmd = values[depth] as Type;
 			ICommand command = invokeCommand( cmd, binding, data, depth );
 			ReleaseCommand( command );
 		}
@@ -137,12 +137,12 @@ public class CommandBinder : Binder, ICommandBinder, IPooledCommandBinder, ITrig
 	}
 
 	//EventCommandBinder (and perhaps other sub-classes) use this method to dispose of the data in sequenced commands
-	virtual protected void disposeOfSequencedData( object data )
+	protected virtual void disposeOfSequencedData( object data )
 	{
 		//No-op. Override if necessary.
 	}
 
-	virtual protected ICommand invokeCommand( Type cmd, ICommandBinding binding, object data, int depth )
+	protected virtual ICommand invokeCommand( Type cmd, ICommandBinding binding, object data, int depth )
 	{
 		ICommand command = createCommand( cmd, data );
 		command.sequenceId = depth;
@@ -151,7 +151,7 @@ public class CommandBinder : Binder, ICommandBinder, IPooledCommandBinder, ITrig
 		return command;
 	}
 
-	virtual protected ICommand createCommand( object cmd, object data )
+	protected virtual ICommand createCommand( object cmd, object data )
 	{
 		ICommand command = getCommand( cmd as Type );
 
@@ -174,7 +174,7 @@ public class CommandBinder : Binder, ICommandBinder, IPooledCommandBinder, ITrig
 	{
 		if( usePooling && pools.ContainsKey( type ) )
 		{
-			Pool pool = pools [type];
+			Pool pool = pools[type];
 			ICommand command = pool.GetInstance() as ICommand;
 			if( command.IsClean )
 			{
@@ -185,9 +185,9 @@ public class CommandBinder : Binder, ICommandBinder, IPooledCommandBinder, ITrig
 		}
 		else
 		{
-			injectionBinder.Bind<ICommand> ().To( type );
-			ICommand command = injectionBinder.GetInstance<ICommand> ();
-			injectionBinder.Unbind<ICommand> ();
+			injectionBinder.Bind<ICommand>().To( type );
+			ICommand command = injectionBinder.GetInstance<ICommand>();
+			injectionBinder.Unbind<ICommand>();
 			return command;
 		}
 	}
@@ -205,7 +205,7 @@ public class CommandBinder : Binder, ICommandBinder, IPooledCommandBinder, ITrig
 	}
 
 #if UNITY_EDITOR
-	string executeCommandOld = "";
+	private string executeCommandOld = "";
 #endif
 	protected void executeCommand( ICommand command )
 	{
@@ -218,7 +218,7 @@ public class CommandBinder : Binder, ICommandBinder, IPooledCommandBinder, ITrig
 
 		if( executeCommandText != executeCommandOld )
 		{
-			UnityEngine.Debug.Log( "<size=14><color=#800080>STRANGE IOC executeCommand: " + executeCommandText + " </color></size>" );
+			UnityEngine.Debug.Log( "<color=#800080>STRANGE IOC executeCommand: " + executeCommandText + " </color>" );
 			executeCommandOld = executeCommandText;
 		}
 #endif
@@ -258,7 +258,7 @@ public class CommandBinder : Binder, ICommandBinder, IPooledCommandBinder, ITrig
 			Type t = command.GetType();
 			if( usePooling && pools.ContainsKey( t ) )
 			{
-				pools [t].ReturnInstance( command );
+				pools[t].ReturnInstance( command );
 			}
 			if( activeCommands.Contains( command ) )
 			{
@@ -266,7 +266,7 @@ public class CommandBinder : Binder, ICommandBinder, IPooledCommandBinder, ITrig
 			}
 			else if( activeSequences.ContainsKey( command ) )
 			{
-				ICommandBinding binding = activeSequences [command];
+				ICommandBinding binding = activeSequences[command];
 				object data = command.data;
 				activeSequences.Remove( command );
 				next( binding, data, command.sequenceId + 1 );
@@ -306,17 +306,17 @@ public class CommandBinder : Binder, ICommandBinder, IPooledCommandBinder, ITrig
 		return true;
 	}
 
-	new public virtual  ICommandBinding Bind<T> ()
+	public new virtual ICommandBinding Bind<T>()
 	{
-		return base.Bind<T> () as ICommandBinding;
+		return base.Bind<T>() as ICommandBinding;
 	}
 
-	new public virtual ICommandBinding Bind( object value )
+	public new virtual ICommandBinding Bind( object value )
 	{
 		return base.Bind( value ) as ICommandBinding;
 	}
 
-	override protected void resolver( IBinding binding )
+	protected override void resolver( IBinding binding )
 	{
 		base.resolver( binding );
 		if( usePooling && ( binding as ICommandBinding ).isPooled )
@@ -328,26 +328,26 @@ public class CommandBinder : Binder, ICommandBinder, IPooledCommandBinder, ITrig
 				{
 					if( pools.ContainsKey( value ) == false )
 					{
-						var myPool = makePoolFromType( value );
-						pools [value] = myPool;
+						Pool myPool = makePoolFromType( value );
+						pools[value] = myPool;
 					}
 				}
 			}
 		}
 	}
 
-	virtual protected Pool makePoolFromType( Type type )
+	protected virtual Pool makePoolFromType( Type type )
 	{
 		Type poolType = typeof( Pool<> ).MakeGenericType( type );
 
 		injectionBinder.Bind( type ).To( type );
 		injectionBinder.Bind<Pool>().To( poolType ).ToName( CommandKeys.COMMAND_POOL );
-		Pool pool = injectionBinder.GetInstance<Pool> ( CommandKeys.COMMAND_POOL ) as Pool;
-		injectionBinder.Unbind<Pool> ( CommandKeys.COMMAND_POOL );
+		Pool pool = injectionBinder.GetInstance<Pool>( CommandKeys.COMMAND_POOL ) as Pool;
+		injectionBinder.Unbind<Pool>( CommandKeys.COMMAND_POOL );
 		return pool;
 	}
 
-	new public virtual ICommandBinding GetBinding<T>()
+	public new virtual ICommandBinding GetBinding<T>()
 	{
 		return base.GetBinding<T>() as ICommandBinding;
 	}

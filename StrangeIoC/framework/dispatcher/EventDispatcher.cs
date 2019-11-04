@@ -35,14 +35,14 @@
 	* @see strange.extensions.dispatcher.api.ITriggerable
 	*/
 
-using System;
-using System.Collections.Generic;
-using strange.framework.api;
-using strange.framework.impl;
 using strange.extensions.dispatcher.api;
 using strange.extensions.dispatcher.eventdispatcher.api;
 using strange.extensions.pool.api;
 using strange.extensions.pool.impl;
+using strange.framework.api;
+using strange.framework.impl;
+using System;
+using System.Collections.Generic;
 
 namespace strange.extensions.dispatcher.eventdispatcher.impl
 {
@@ -60,17 +60,19 @@ public class EventDispatcher : Binder, IEventDispatcher, ITriggerProvider, ITrig
 	{
 		if( eventPool == null )
 		{
-			eventPool = new Pool<TmEvent> ();
-			eventPool.instanceProvider = new EventInstanceProvider();
+			eventPool = new Pool<TmEvent>
+			{
+				instanceProvider = new EventInstanceProvider()
+			};
 		}
 	}
 
-	override public IBinding GetRawBinding()
+	public override IBinding GetRawBinding()
 	{
 		return new EventBinding( resolver );
 	}
 
-	new public IEventBinding Bind( object key )
+	public new IEventBinding Bind( object key )
 	{
 		return base.Bind( key ) as IEventBinding;
 	}
@@ -81,20 +83,20 @@ public class EventDispatcher : Binder, IEventDispatcher, ITriggerProvider, ITrig
 	}
 
 #if UNITY_EDITOR
-	string eventTypeOld = "";
+	private string eventTypeOld = "";
 #endif
 
 	public void Dispatch( object eventType, object data )
 	{
 #if UNITY_EDITOR
-		string eventTypeText= eventType.ToString();
+		string eventTypeText = eventType.ToString();
 
 		if( eventTypeText != eventTypeOld
 				&& eventTypeText != "E_AppFixedUpdate"
 				&& eventTypeText != "E_AppLateUpdate"
 				&& eventTypeText != "E_AppUpdate" )
 		{
-			UnityEngine.Debug.Log( "<size=14><color=#808000>STRANGE IOC  Dispatch: " + eventTypeText + " </color></size>" );
+			UnityEngine.Debug.Log( "<color=#808000>STRANGE IOC  Dispatch: " + eventTypeText + " </color>" );
 			eventTypeOld = eventTypeText;
 		}
 #endif
@@ -173,7 +175,7 @@ public class EventDispatcher : Binder, IEventDispatcher, ITriggerProvider, ITrig
 		internalReleaseEvent( evt );
 	}
 
-	virtual protected IEvent conformDataToEvent( object eventType, object data )
+	protected virtual IEvent conformDataToEvent( object eventType, object data )
 	{
 		IEvent retv = null;
 		if( eventType == null )
@@ -203,7 +205,7 @@ public class EventDispatcher : Binder, IEventDispatcher, ITriggerProvider, ITrig
 		return retv;
 	}
 
-	virtual protected IEvent createEvent( object eventType, object data )
+	protected virtual IEvent createEvent( object eventType, object data )
 	{
 		IEvent retv = eventPool.GetInstance();
 		retv.type = eventType;
@@ -213,7 +215,7 @@ public class EventDispatcher : Binder, IEventDispatcher, ITriggerProvider, ITrig
 
 	}
 
-	virtual protected void invokeEventCallback( object data, EventCallback callback )
+	protected virtual void invokeEventCallback( object data, EventCallback callback )
 	{
 		try
 		{
@@ -223,7 +225,7 @@ public class EventDispatcher : Binder, IEventDispatcher, ITriggerProvider, ITrig
 		{
 			object tgt = callback.Target;
 			string methodName = ( callback as Delegate ).Method.Name;
-			string message = "An EventCallback is attempting an illegal cast. One possible reason is not typing the payload to IEvent in your callback. Another is illegal casting of the data.\nTarget class: "  + tgt + " method: " + methodName;
+			string message = "An EventCallback is attempting an illegal cast. One possible reason is not typing the payload to IEvent in your callback. Another is illegal casting of the data.\nTarget class: " + tgt + " method: " + methodName;
 			throw new EventDispatcherException( message, EventDispatcherExceptionType.TARGET_INVOCATION );
 		}
 	}
@@ -405,12 +407,12 @@ public class EventDispatcher : Binder, IEventDispatcher, ITriggerProvider, ITrig
 	}
 }
 
-class EventInstanceProvider : IInstanceProvider
+internal class EventInstanceProvider : IInstanceProvider
 {
 	public T GetInstance<T>()
 	{
 		object instance = new TmEvent();
-		T retv = ( T ) instance;
+		T retv = ( T )instance;
 		return retv;
 	}
 

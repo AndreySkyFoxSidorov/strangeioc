@@ -22,14 +22,14 @@
  * @see strange.extensions.context.api.ContextExceptionType
  */
 
-using System;
 using strange.extensions.context.api;
+using System;
 
 namespace strange.extensions.context.impl
 {
 public class ContextException : Exception
 {
-	public ContextExceptionType type { get; set;}
+	public ContextExceptionType type { get; set; }
 
 	public ContextException() : base()
 	{

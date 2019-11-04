@@ -20,8 +20,8 @@
  * The Factory that instantiates all instances.
  */
 
-using System;
 using strange.extensions.injector.api;
+using System;
 
 namespace strange.extensions.injector.impl
 {
@@ -106,7 +106,7 @@ public class InjectorFactory : IInjectorFactory
 			{
 				if( key != null )
 				{
-					UnityEngine.Debug.LogError( "generateImplicit object == NULL name:"+key.ToString() );
+					UnityEngine.Debug.LogError( "generateImplicit object == NULL name:" + key.ToString() );
 				}
 				if( args != null )
 				{
@@ -138,7 +138,7 @@ public class InjectorFactory : IInjectorFactory
 		{
 			return createFromValue( binding.value, args );
 		}
-		object value = generateImplicit( ( binding.key as object[] ) [0], args );
+		object value = generateImplicit( ( binding.key as object[] )[0], args );
 		return createFromValue( value, args );
 	}
 

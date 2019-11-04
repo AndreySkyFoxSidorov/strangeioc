@@ -60,47 +60,48 @@ using System;
 [AttributeUsage( AttributeTargets.Property,
 				 AllowMultiple = false,
 				 Inherited = true )]
-public class Inject: Attribute
+public class Inject : Attribute
 {
-	public Inject() {}
+	public Inject() { }
 
 	public Inject( object n )
 	{
+		UnityEngine.Debug.Log( "Inject: " + n.GetType() + "  Name: " + n.GetType().Name );
 		name = n;
 	}
 
-	public object name {get; set;}
+	public object name { get; set; }
 }
 
 //Tag [PostConstruct] to perform post-injection construction actions
 [AttributeUsage( AttributeTargets.Constructor,
 				 AllowMultiple = false,
 				 Inherited = true )]
-public class Construct: Attribute
+public class Construct : Attribute
 {
-	public Construct() {}
+	public Construct() { }
 }
 
 //Tag [PostConstruct] to perform post-injection construction actions
 [AttributeUsage( AttributeTargets.Method,
 				 AllowMultiple = false,
 				 Inherited = true )]
-public class PostConstruct: Attribute
+public class PostConstruct : Attribute
 {
-	public PostConstruct() {}
+	public PostConstruct() { }
 
 	public PostConstruct( int p )
 	{
 		priority = p;
 	}
 
-	public int priority {get; set;}
+	public int priority { get; set; }
 }
 
 [AttributeUsage( AttributeTargets.Method,
 				 AllowMultiple = false,
 				 Inherited = true )]
-public class Deconstruct: Attribute
+public class Deconstruct : Attribute
 {
-	public Deconstruct() {}
+	public Deconstruct() { }
 }

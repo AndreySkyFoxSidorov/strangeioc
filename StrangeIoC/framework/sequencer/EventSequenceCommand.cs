@@ -20,10 +20,8 @@
  * @deprecated
  */
 
-using System;
 using strange.extensions.context.api;
 using strange.extensions.dispatcher.eventdispatcher.api;
-using strange.extensions.sequencer.impl;
 
 namespace strange.extensions.sequencer.impl
 {
@@ -31,11 +29,11 @@ public class EventSequenceCommand : SequenceCommand
 {
 	/// The context-wide Event bus
 	[Inject( ContextKeys.CONTEXT_DISPATCHER )]
-	public IEventDispatcher dispatcher { get; set;}
+	public IEventDispatcher dispatcher { get; set; }
 
 	/// The injected IEvent
 	[Inject]
-	public IEvent evt { get; set;}
+	public IEvent evt { get; set; }
 }
 }
 

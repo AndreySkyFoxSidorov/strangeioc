@@ -45,8 +45,8 @@
  * @see strange.extensions.injector.api.IInjectionBinder
  */
 
-using System;
 using strange.framework.api;
+using System;
 
 namespace strange.extensions.injector.api
 {
@@ -71,11 +71,11 @@ IBinding
 	IInjectionBinding ToInject( bool value );
 
 	/// Get the parameter that specifies whether this Binding allows an instance to be injected
-	bool toInject{get;}
+	bool toInject { get; }
 
 	/// Get and set the InjectionBindingType
 	/// @see InjectionBindingType
-	InjectionBindingType type{get; set;}
+	InjectionBindingType type { get; set; }
 
 	/// Bind is the same as Key, but permits Binder syntax: `Bind<T>().Bind<T>()`
 	new IInjectionBinding Bind<T>();
@@ -85,17 +85,17 @@ IBinding
 
 	new IInjectionBinding To<T>();
 	new IInjectionBinding To( object o );
-	new IInjectionBinding ToName<T> ();
+	new IInjectionBinding ToName<T>();
 	new IInjectionBinding ToName( object o );
 	new IInjectionBinding Named<T>();
 	new IInjectionBinding Named( object o );
 
 
-	new object key{ get; }
-	new object name{ get; }
-	new object value{ get; }
-	new Enum keyConstraint{ get; set;}
-	new Enum valueConstraint{ get; set;}
+	new object key { get; }
+	new object name { get; }
+	new object value { get; }
+	new Enum keyConstraint { get; set; }
+	new Enum valueConstraint { get; set; }
 
 }
 }

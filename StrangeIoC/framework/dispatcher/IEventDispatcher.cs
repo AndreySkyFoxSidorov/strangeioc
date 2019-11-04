@@ -32,7 +32,6 @@
  * @see strange.extensions.dispatcher.eventdispatcher.api.IEvent
  */
 
-using System;
 using strange.extensions.dispatcher.api;
 
 namespace strange.extensions.dispatcher.eventdispatcher.api

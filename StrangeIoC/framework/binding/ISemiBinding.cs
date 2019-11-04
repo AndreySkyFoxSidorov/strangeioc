@@ -45,10 +45,10 @@ public interface ISemiBinding :
 IManagedList
 {
 	/// Set or get the constraint.
-	Enum constraint{ get; set;}
+	Enum constraint { get; set; }
 
 	/// A secondary constraint that ensures that this SemiBinding will never contain multiple values equivalent to each other.
-	bool uniqueValues{get; set;}
+	bool uniqueValues { get; set; }
 }
 }
 

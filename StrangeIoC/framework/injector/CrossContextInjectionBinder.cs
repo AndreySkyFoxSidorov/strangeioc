@@ -23,7 +23,6 @@
  * @see strange.extensions.injector.api.ICrossContextInjectionBinder
  */
 
-using strange.extensions.injector.impl;
 using strange.extensions.injector.api;
 using strange.framework.api;
 
@@ -53,7 +52,7 @@ public class CrossContextInjectionBinder : InjectionBinder, ICrossContextInjecti
 	//SDM2014-0120: added as part of cross-Context implicit binding fix
 	public override IInjectionBinding GetBinding( object key ) //without this override Binder.GetBinding(object,object) gets called instead of CrossContextInjectionBinder.GetBinding(
 	{
-		return GetBinding( key,null );
+		return GetBinding( key, null );
 	}
 
 
@@ -70,7 +69,7 @@ public class CrossContextInjectionBinder : InjectionBinder, ICrossContextInjecti
 		return binding;
 	}
 
-	override public void ResolveBinding( IBinding binding, object key )
+	public override void ResolveBinding( IBinding binding, object key )
 	{
 		//Decide whether to resolve locally or not
 		if( binding is IInjectionBinding )

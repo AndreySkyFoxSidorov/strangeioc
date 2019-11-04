@@ -22,14 +22,14 @@
  * @see strange.extensions.context.api.CommandExceptionType
  */
 
-using System;
 using strange.extensions.command.api;
+using System;
 
 namespace strange.extensions.command.impl
 {
 public class CommandException : Exception
 {
-	public CommandExceptionType type { get; set;}
+	public CommandExceptionType type { get; set; }
 
 	public CommandException() : base()
 	{

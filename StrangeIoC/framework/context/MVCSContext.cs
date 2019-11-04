@@ -155,15 +155,14 @@
  *
  */
 
-using strange.extensions.implicitBind.api;
-using strange.extensions.implicitBind.impl;
-using UnityEngine;
 using strange.extensions.command.api;
 using strange.extensions.command.impl;
 using strange.extensions.context.api;
 using strange.extensions.dispatcher.api;
 using strange.extensions.dispatcher.eventdispatcher.api;
 using strange.extensions.dispatcher.eventdispatcher.impl;
+using strange.extensions.implicitBind.api;
+using strange.extensions.implicitBind.impl;
 using strange.extensions.injector.api;
 using strange.extensions.mediation.api;
 using strange.extensions.mediation.impl;
@@ -171,32 +170,33 @@ using strange.extensions.sequencer.api;
 using strange.extensions.sequencer.impl;
 using strange.framework.api;
 using strange.framework.impl;
+using UnityEngine;
 
 namespace strange.extensions.context.impl
 {
 public class MVCSContext : CrossContext
 {
 	/// A Binder that maps Events to Commands
-	public ICommandBinder commandBinder {get; set;}
+	public ICommandBinder commandBinder { get; set; }
 
 	/// A Binder that serves as the Event bus for the Context
-	public IEventDispatcher dispatcher {get; set;}
+	public IEventDispatcher dispatcher { get; set; }
 
 	/// A Binder that maps Views to Mediators
-	public IMediationBinder mediationBinder {get; set;}
+	public IMediationBinder mediationBinder { get; set; }
 
 	//Interprets implicit bindings
 	public IImplicitBinder implicitBinder { get; set; }
 
 	/// A Binder that maps Events to Sequences
-	public ISequencer sequencer {get; set;}
+	public ISequencer sequencer { get; set; }
 
 
 	/// A list of Views Awake before the Context is fully set up.
 	protected static ISemiBinding viewCache = new SemiBinding();
 
 	public MVCSContext() : base()
-	{}
+	{ }
 
 	/// The recommended Constructor
 	/// Just pass in the instance of your ContextView. Everything will begin automatically.
@@ -213,7 +213,7 @@ public class MVCSContext : CrossContext
 	{
 	}
 
-	override public IContext SetContextView( object view )
+	public override IContext SetContextView( object view )
 	{
 		contextView = ( view as MonoBehaviour ).gameObject;
 		if( contextView == null )
@@ -280,7 +280,7 @@ public class MVCSContext : CrossContext
 	/// Always bear in mind that doing this risks adding
 	/// dependencies that must be cleaned up when Contexts
 	/// are removed.
-	override public object GetComponent<T>()
+	public override object GetComponent<T>()
 	{
 		return GetComponent<T>( null );
 	}
@@ -289,7 +289,7 @@ public class MVCSContext : CrossContext
 	/// Always bear in mind that doing this risks adding
 	/// dependencies that must be cleaned up when Contexts
 	/// are removed.
-	override public object GetComponent<T>( object name )
+	public override object GetComponent<T>( object name )
 	{
 		IInjectionBinding binding = injectionBinder.GetBinding<T>( name );
 		if( binding != null )
@@ -299,7 +299,7 @@ public class MVCSContext : CrossContext
 		return null;
 	}
 
-	override public void AddView( object view )
+	public override void AddView( object view )
 	{
 		if( mediationBinder != null )
 		{
@@ -311,7 +311,7 @@ public class MVCSContext : CrossContext
 		}
 	}
 
-	override public void RemoveView( object view )
+	public override void RemoveView( object view )
 	{
 		mediationBinder.Trigger( MediationEvent.DESTROYED, view as IView );
 	}
@@ -322,7 +322,7 @@ public class MVCSContext : CrossContext
 	/// View to be Awake before this Context has finished initing.
 	/// `cacheView()` maintains a list of such 'early-risers'
 	/// until the Context is ready to mediate them.
-	virtual protected void cacheView( MonoBehaviour view )
+	protected virtual void cacheView( MonoBehaviour view )
 	{
 		if( viewCache.constraint.Equals( BindingConstraintType.ONE ) )
 		{
@@ -332,7 +332,7 @@ public class MVCSContext : CrossContext
 	}
 
 	/// Provide mediation for early-riser Views
-	virtual protected void mediateViewCache()
+	protected virtual void mediateViewCache()
 	{
 		if( mediationBinder == null )
 		{

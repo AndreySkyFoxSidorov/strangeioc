@@ -20,11 +20,11 @@
 * @see strange.extensions.pool.api.IPool
  */
 
+using strange.extensions.pool.api;
+using strange.framework.api;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using strange.framework.api;
-using strange.extensions.pool.api;
 
 namespace strange.extensions.pool.impl
 {
@@ -35,7 +35,7 @@ public class Pool<T> : Pool, IPool<T>
 		poolType = typeof( T );
 	}
 
-	new public T GetInstance()
+	public new T GetInstance()
 	{
 		return ( T )base.GetInstance();
 	}
@@ -51,7 +51,7 @@ public class Pool : IPool, IPoolable
 	protected Stack instancesAvailable = new Stack();
 
 	/// A HashSet of the objects checked out of the Pool.
-	protected HashSet<object> instancesInUse = new HashSet<object> ();
+	protected HashSet<object> instancesInUse = new HashSet<object>();
 
 	protected int _instanceCount;
 
@@ -67,7 +67,7 @@ public class Pool : IPool, IPoolable
 
 	#region IManagedList implementation
 
-	virtual public IManagedList Add( object value )
+	public virtual IManagedList Add( object value )
 	{
 		failIf( value.GetType() != poolType, "Pool Type mismatch. Pools must consist of a common concrete type.\n\t\tPool type: " + poolType.ToString() + "\n\t\tMismatch type: " + value.GetType().ToString(), PoolExceptionType.TYPE_MISMATCH );
 		_instanceCount++;
@@ -75,41 +75,39 @@ public class Pool : IPool, IPoolable
 		return this;
 	}
 
-	virtual public IManagedList Add( object[] list )
+	public virtual IManagedList Add( object[] list )
 	{
 		foreach( object item in list )
-		Add( item );
+		{
+			Add( item );
+		}
 
 		return this;
 	}
 
-	virtual public IManagedList Remove( object value )
+	public virtual IManagedList Remove( object value )
 	{
 		_instanceCount--;
 		removeInstance( value );
 		return this;
 	}
 
-	virtual public IManagedList Remove( object[] list )
+	public virtual IManagedList Remove( object[] list )
 	{
 		foreach( object item in list )
-		Remove( item );
+		{
+			Remove( item );
+		}
 
 		return this;
 	}
 
-	virtual public object value
-	{
-		get
-		{
-			return GetInstance();
-		}
-	}
+	public virtual object value => GetInstance();
 	#endregion
 
 	#region ISemiBinding region
-	virtual public bool uniqueValues {get; set;}
-	virtual public Enum constraint { get; set; }
+	public virtual bool uniqueValues { get; set; }
+	public virtual Enum constraint { get; set; }
 
 	#endregion
 
@@ -119,15 +117,9 @@ public class Pool : IPool, IPoolable
 	/// Pool objects must be of the same concrete type. This property enforces that requirement.
 	public System.Type poolType { get; set; }
 
-	public int instanceCount
-	{
-		get
-		{
-			return _instanceCount;
-		}
-	}
+	public int instanceCount => _instanceCount;
 
-	virtual public object GetInstance()
+	public virtual object GetInstance()
 	{
 		// Is an instance available?
 		if( instancesAvailable.Count > 0 )
@@ -190,7 +182,7 @@ public class Pool : IPool, IPoolable
 		return null;
 	}
 
-	virtual public void ReturnInstance( object value )
+	public virtual void ReturnInstance( object value )
 	{
 		if( instancesInUse.Contains( value ) )
 		{
@@ -203,26 +195,20 @@ public class Pool : IPool, IPoolable
 		}
 	}
 
-	virtual public void Clean()
+	public virtual void Clean()
 	{
 		instancesAvailable.Clear();
-		instancesInUse = new HashSet<object> ();
+		instancesInUse = new HashSet<object>();
 		_instanceCount = 0;
 	}
 
-	virtual public int available
-	{
-		get
-		{
-			return instancesAvailable.Count;
-		}
-	}
+	public virtual int available => instancesAvailable.Count;
 
-	virtual public int size { get; set; }
+	public virtual int size { get; set; }
 
-	virtual public PoolOverflowBehavior overflowBehavior { get; set; }
+	public virtual PoolOverflowBehavior overflowBehavior { get; set; }
 
-	virtual public PoolInflationType inflationType { get; set; }
+	public virtual PoolInflationType inflationType { get; set; }
 
 	#endregion
 
@@ -256,7 +242,7 @@ public class Pool : IPool, IPoolable
 	/// Otherwise, it is presumed inactive, and the next available object is popped from
 	/// instancesAvailable.
 	/// <param name="value">An instance to remove permanently from the Pool.</param>
-	virtual protected void removeInstance( object value )
+	protected virtual void removeInstance( object value )
 	{
 		failIf( value.GetType() != poolType, "Attempt to remove a instance from a pool that is of the wrong Type:\n\t\tPool type: " + poolType.ToString() + "\n\t\tInstance type: " + value.GetType().ToString(), PoolExceptionType.TYPE_MISMATCH );
 		if( instancesInUse.Contains( value ) )

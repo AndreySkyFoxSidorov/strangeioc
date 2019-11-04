@@ -54,20 +54,20 @@
  * See Command for details on asynchronous Commands and cancelling sequences.
  */
 
-using System;
-using System.Collections.Generic;
 using strange.extensions.command.api;
 using strange.extensions.injector.api;
-using strange.framework.api;
 using strange.extensions.injector.impl;
-using strange.extensions.signal.impl;
 using strange.extensions.signal.api;
+using strange.extensions.signal.impl;
+using strange.framework.api;
+using System;
+using System.Collections.Generic;
 
 namespace strange.extensions.command.impl
 {
 public class SignalCommandBinder : CommandBinder
 {
-	override public void ResolveBinding( IBinding binding, object key )
+	public override void ResolveBinding( IBinding binding, object key )
 	{
 		base.ResolveBinding( binding, key );
 
@@ -79,7 +79,7 @@ public class SignalCommandBinder : CommandBinder
 
 	}
 
-	override public void OnRemove()
+	public override void OnRemove()
 	{
 		foreach( object key in bindings.Keys )
 		{
@@ -154,11 +154,14 @@ public class SignalCommandBinder : CommandBinder
 		command.data = data;
 
 		foreach( Type typeToRemove in signalTypes ) //clean up these bindings
-		injectionBinder.Unbind( typeToRemove );
+		{
+			injectionBinder.Unbind( typeToRemove );
+		}
+
 		return command;
 	}
 
-	override public ICommandBinding Bind<T>()
+	public override ICommandBinding Bind<T>()
 	{
 		IInjectionBinding binding = injectionBinder.GetBinding<T>();
 		if( binding == null ) //If this isn't injected yet, inject a new one as a singleton
@@ -166,7 +169,7 @@ public class SignalCommandBinder : CommandBinder
 			injectionBinder.Bind<T>().ToSingleton();
 		}
 
-		T signal = ( T )injectionBinder.GetInstance<T>();
+		T signal = injectionBinder.GetInstance<T>();
 		return base.Bind( signal );
 	}
 
@@ -174,17 +177,17 @@ public class SignalCommandBinder : CommandBinder
 	/// <exception cref="InjectionException">If there is no binding for this type.</exception>
 	public override void Unbind<T>()
 	{
-		ICommandBinding binding = ( ICommandBinding ) injectionBinder.GetBinding<T>();
+		ICommandBinding binding = ( ICommandBinding )injectionBinder.GetBinding<T>();
 		if( binding != null )
 		{
-			T signal = ( T ) injectionBinder.GetInstance<T>();
+			T signal = injectionBinder.GetInstance<T>();
 			Unbind( signal, null );
 		}
 	}
 
 	/// <summary>Unbind by Signal Instance</summary>
 	/// <param name="key">Instance of IBaseSignal</param>
-	override public void Unbind( object key, object name )
+	public override void Unbind( object key, object name )
 	{
 		if( bindings.ContainsKey( key ) )
 		{
@@ -197,7 +200,7 @@ public class SignalCommandBinder : CommandBinder
 	public override ICommandBinding GetBinding<T>()
 	{
 		//This should be a signal, see Bind<T> above
-		T signal = ( T )injectionBinder.GetInstance<T>();
+		T signal = injectionBinder.GetInstance<T>();
 		return base.GetBinding( signal ) as ICommandBinding;
 	}
 }

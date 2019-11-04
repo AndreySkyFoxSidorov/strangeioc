@@ -20,17 +20,16 @@
  * @deprecated
  */
 
-using System;
 using strange.extensions.command.impl;
 using strange.extensions.sequencer.api;
-using strange.framework.api;
 using strange.framework.impl;
+using System;
 
 namespace strange.extensions.sequencer.impl
 {
 public class SequenceBinding : CommandBinding, ISequenceBinding
 {
-	new public bool isOneOff { get; set;}
+	public new bool isOneOff { get; set; }
 
 	public SequenceBinding() : base()
 	{
@@ -40,29 +39,29 @@ public class SequenceBinding : CommandBinding, ISequenceBinding
 	{
 	}
 
-	new public ISequenceBinding Once()
+	public new ISequenceBinding Once()
 	{
 		isOneOff = true;
 		return this;
 	}
 
 	//Everything below this point is simply facade on Binding to ensure fluent interface
-	new public ISequenceBinding Bind<T>()
+	public new ISequenceBinding Bind<T>()
 	{
-		return Bind<T> ();
+		return Bind<T>();
 	}
 
-	new public ISequenceBinding Bind( object key )
+	public new ISequenceBinding Bind( object key )
 	{
 		return Bind( key );
 	}
 
-	new public ISequenceBinding To<T>()
+	public new ISequenceBinding To<T>()
 	{
 		return To( typeof( T ) );
 	}
 
-	new public ISequenceBinding To( object o )
+	public new ISequenceBinding To( object o )
 	{
 		Type oType = o as Type;
 		Type sType = typeof( ISequenceCommand );
@@ -76,22 +75,22 @@ public class SequenceBinding : CommandBinding, ISequenceBinding
 		return base.To( o ) as ISequenceBinding;
 	}
 
-	new public ISequenceBinding ToName<T>()
+	public new ISequenceBinding ToName<T>()
 	{
-		return base.ToName<T> () as ISequenceBinding;
+		return base.ToName<T>() as ISequenceBinding;
 	}
 
-	new public ISequenceBinding ToName( object o )
+	public new ISequenceBinding ToName( object o )
 	{
 		return base.ToName( o ) as ISequenceBinding;
 	}
 
-	new public ISequenceBinding Named<T>()
+	public new ISequenceBinding Named<T>()
 	{
-		return base.Named<T> () as ISequenceBinding;
+		return base.Named<T>() as ISequenceBinding;
 	}
 
-	new public ISequenceBinding Named( object o )
+	public new ISequenceBinding Named( object o )
 	{
 		return base.Named( o ) as ISequenceBinding;
 	}

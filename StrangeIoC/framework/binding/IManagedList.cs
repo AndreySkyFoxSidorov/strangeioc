@@ -21,8 +21,6 @@
  * are either a SemiBinding or a Pool. A ManagedList can have objects added or removed.
  */
 
-using System;
-
 namespace strange.framework.api
 {
 public interface IManagedList
@@ -42,7 +40,7 @@ public interface IManagedList
 	/// Retrieve the value of this List.
 	/// If the constraint is MANY, the value will be an Array.
 	/// If the constraint is POOL, this becomes a synonym for GetInstance().
-	object value{ get; }
+	object value { get; }
 }
 }
 

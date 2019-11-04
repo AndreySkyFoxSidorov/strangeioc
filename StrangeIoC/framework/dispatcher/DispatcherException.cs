@@ -20,14 +20,14 @@
  * An exception thrown by the Dispatcher system.
  */
 
-using System;
 using strange.extensions.dispatcher.api;
+using System;
 
 namespace strange.extensions.dispatcher.impl
 {
 public class DispatcherException : Exception
 {
-	public DispatcherExceptionType type { get; set;}
+	public DispatcherExceptionType type { get; set; }
 
 	public DispatcherException() : base()
 	{

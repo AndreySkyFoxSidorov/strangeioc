@@ -15,14 +15,14 @@
  */
 
 
-using System;
 using strange.framework.api;
+using System;
 
 namespace strange.framework.impl
 {
 public class BinderException : Exception
 {
-	public BinderExceptionType type { get; set;}
+	public BinderExceptionType type { get; set; }
 
 	public BinderException() : base()
 	{

@@ -20,14 +20,14 @@
  * An exception thrown by the Reflector.
  */
 
-using System;
 using strange.extensions.reflector.api;
+using System;
 
 namespace strange.extensions.reflector.impl
 {
 public class ReflectionException : Exception
 {
-	public ReflectionExceptionType type { get; set;}
+	public ReflectionExceptionType type { get; set; }
 
 	public ReflectionException() : base()
 	{

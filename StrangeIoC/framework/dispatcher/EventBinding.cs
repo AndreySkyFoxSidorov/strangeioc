@@ -25,20 +25,20 @@
  * @see strange.extensions.dispatcher.eventdispatcher.api.IEvent
  */
 
+using strange.extensions.dispatcher.api;
+using strange.extensions.dispatcher.eventdispatcher.api;
+using strange.extensions.dispatcher.impl;
+using strange.framework.api;
+using strange.framework.impl;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using strange.extensions.dispatcher.api;
-using strange.extensions.dispatcher.impl;
-using strange.extensions.dispatcher.eventdispatcher.api;
-using strange.framework.api;
-using strange.framework.impl;
 
 namespace strange.extensions.dispatcher.eventdispatcher.impl
 {
 public class EventBinding : Binding, IEventBinding
 {
-	private Dictionary<Delegate, EventCallbackType> callbackTypes;
+	private readonly Dictionary<Delegate, EventCallbackType> callbackTypes;
 
 	public EventBinding() : this( null )
 	{
@@ -48,14 +48,14 @@ public class EventBinding : Binding, IEventBinding
 	{
 		keyConstraint = BindingConstraintType.ONE;
 		valueConstraint = BindingConstraintType.MANY;
-		callbackTypes = new Dictionary<Delegate, EventCallbackType> ();
+		callbackTypes = new Dictionary<Delegate, EventCallbackType>();
 	}
 
 	public EventCallbackType TypeForCallback( EmptyCallback callback )
 	{
 		if( callbackTypes.ContainsKey( callback ) )
 		{
-			return callbackTypes [callback];
+			return callbackTypes[callback];
 		}
 		return EventCallbackType.NOT_FOUND;
 	}
@@ -64,12 +64,12 @@ public class EventBinding : Binding, IEventBinding
 	{
 		if( callbackTypes.ContainsKey( callback ) )
 		{
-			return callbackTypes [callback];
+			return callbackTypes[callback];
 		}
 		return EventCallbackType.NOT_FOUND;
 	}
 
-	new public IEventBinding Bind( object key )
+	public new IEventBinding Bind( object key )
 	{
 		return base.Bind( key ) as IEventBinding;
 	}
@@ -88,14 +88,14 @@ public class EventBinding : Binding, IEventBinding
 		return this;
 	}
 
-	new public IEventBinding To( object value )
+	public new IEventBinding To( object value )
 	{
 		base.To( value );
 		storeMethodType( value as Delegate );
 		return this;
 	}
 
-	override public void RemoveValue( object value )
+	public override void RemoveValue( object value )
 	{
 		base.RemoveValue( value );
 		callbackTypes.Remove( value as Delegate );

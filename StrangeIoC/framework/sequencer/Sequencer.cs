@@ -20,15 +20,11 @@
  * @deprecated
  */
 
-using System;
-using System.Collections.Generic;
-using strange.extensions.dispatcher.api;
-using strange.extensions.injector.api;
-using strange.extensions.sequencer.api;
-using strange.extensions.command.api;
 using strange.extensions.command.impl;
+using strange.extensions.dispatcher.api;
+using strange.extensions.sequencer.api;
 using strange.framework.api;
-using strange.framework.impl;
+using System;
 
 namespace strange.extensions.sequencer.impl
 {
@@ -39,12 +35,12 @@ public class Sequencer : CommandBinder, ISequencer, ITriggerable
 	{
 	}
 
-	override public IBinding GetRawBinding()
+	public override IBinding GetRawBinding()
 	{
 		return new SequenceBinding( resolver );
 	}
 
-	override public void ReactTo( object key, object data )
+	public override void ReactTo( object key, object data )
 	{
 		ISequenceBinding binding = GetBinding( key ) as ISequenceBinding;
 		if( binding != null )
@@ -72,18 +68,18 @@ public class Sequencer : CommandBinder, ISequencer, ITriggerable
 	}
 
 	/// Instantiate and Inject the ISequenceCommand.
-	new virtual protected ISequenceCommand createCommand( object cmd, object data )
+	protected new virtual ISequenceCommand createCommand( object cmd, object data )
 	{
-		injectionBinder.Bind<ISequenceCommand> ().To( cmd );
-		ISequenceCommand command = injectionBinder.GetInstance<ISequenceCommand> () as ISequenceCommand;
+		injectionBinder.Bind<ISequenceCommand>().To( cmd );
+		ISequenceCommand command = injectionBinder.GetInstance<ISequenceCommand>() as ISequenceCommand;
 		command.data = data;
-		injectionBinder.Unbind<ISequenceCommand> ();
+		injectionBinder.Unbind<ISequenceCommand>();
 		return command;
 	}
 
 	private void trackCommand( ISequenceCommand command, ISequenceBinding binding )
 	{
-		activeSequences [command] = binding;
+		activeSequences[command] = binding;
 	}
 
 	private void executeCommand( ISequenceCommand command )
@@ -101,7 +97,7 @@ public class Sequencer : CommandBinder, ISequencer, ITriggerable
 		{
 			if( activeSequences.ContainsKey( command ) )
 			{
-				ISequenceBinding binding = activeSequences [command] as ISequenceBinding;
+				ISequenceBinding binding = activeSequences[command] as ISequenceBinding;
 				object data = command.data;
 				activeSequences.Remove( command );
 				nextInSequence( binding, data, command.sequenceId + 1 );
@@ -114,7 +110,7 @@ public class Sequencer : CommandBinder, ISequencer, ITriggerable
 		object[] values = binding.value as object[];
 		if( depth < values.Length )
 		{
-			Type cmd = values [depth] as Type;
+			Type cmd = values[depth] as Type;
 			invokeCommand( cmd, binding, data, depth );
 		}
 		else
@@ -134,12 +130,12 @@ public class Sequencer : CommandBinder, ISequencer, ITriggerable
 		}
 	}
 
-	new public virtual ISequenceBinding Bind<T> ()
+	public new virtual ISequenceBinding Bind<T>()
 	{
-		return base.Bind<T> () as ISequenceBinding;
+		return base.Bind<T>() as ISequenceBinding;
 	}
 
-	new public virtual ISequenceBinding Bind( object value )
+	public new virtual ISequenceBinding Bind( object value )
 	{
 		return base.Bind( value ) as ISequenceBinding;
 	}

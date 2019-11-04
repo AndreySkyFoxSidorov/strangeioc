@@ -38,10 +38,7 @@
  * @see strange.extensions.injector.api.IInjectorFactory
  */
 
-using System;
-using System.Collections.Generic;
 using strange.extensions.reflector.api;
-using strange.framework.api;
 
 namespace strange.extensions.injector.api
 {
@@ -63,13 +60,13 @@ public interface IInjector
 	void Uninject( object target );
 
 	/// Get/set an InjectorFactory.
-	IInjectorFactory factory{ get; set;}
+	IInjectorFactory factory { get; set; }
 
 	/// Get/set an InjectionBinder.
-	IInjectionBinder binder{ get; set;}
+	IInjectionBinder binder { get; set; }
 
 	/// Get/set a ReflectionBinder.
-	IReflectionBinder reflector{ get; set;}
+	IReflectionBinder reflector { get; set; }
 }
 }
 

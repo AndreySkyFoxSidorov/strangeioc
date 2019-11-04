@@ -23,8 +23,8 @@
  * @see strange.extensions.signal.impl.Signal
  */
 
-using System;
 using strange.extensions.signal.api;
+using System;
 using System.Collections.Generic;
 
 namespace strange.extensions.signal.impl

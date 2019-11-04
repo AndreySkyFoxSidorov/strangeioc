@@ -23,8 +23,6 @@
  * In MVCSContext the dispatched notification is an IEvent.
  */
 
-using System;
-
 namespace strange.extensions.dispatcher.api
 {
 public interface IDispatcher

@@ -14,8 +14,6 @@
  *		limitations under the License.
  */
 
-using System;
-
 namespace strange.extensions.command.api
 {
 public enum CommandKeys

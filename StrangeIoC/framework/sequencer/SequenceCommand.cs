@@ -22,9 +22,7 @@
  * @see strange.extensions.command.api.ICommand
  */
 
-using System;
 using strange.extensions.command.impl;
-using strange.extensions.injector.api;
 using strange.extensions.sequencer.api;
 
 namespace strange.extensions.sequencer.impl
@@ -32,13 +30,13 @@ namespace strange.extensions.sequencer.impl
 public class SequenceCommand : Command, ISequenceCommand
 {
 	[Inject]
-	public ISequencer sequencer { get; set;}
+	public ISequencer sequencer { get; set; }
 
 	public SequenceCommand()
 	{
 	}
 
-	new public void Fail()
+	public new void Fail()
 	{
 		if( sequencer != null )
 		{
@@ -46,12 +44,12 @@ public class SequenceCommand : Command, ISequenceCommand
 		}
 	}
 
-	new virtual public void Execute()
+	public new virtual void Execute()
 	{
 		throw new SequencerException( "You must override the Execute method in every SequenceCommand", SequencerExceptionType.EXECUTE_OVERRIDE );
 	}
 
-	new public void Release()
+	public new void Release()
 	{
 		retain = false;
 		if( sequencer != null )

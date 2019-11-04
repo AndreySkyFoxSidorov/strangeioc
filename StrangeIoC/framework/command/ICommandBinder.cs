@@ -51,8 +51,6 @@
  * See Command for details on asynchronous Commands and cancelling sequences.
  */
 
-using System;
-using strange.extensions.injector.api;
 using strange.framework.api;
 
 namespace strange.extensions.command.api

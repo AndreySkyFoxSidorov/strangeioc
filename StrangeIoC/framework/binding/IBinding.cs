@@ -67,7 +67,7 @@ public interface IBinding
 	/**
 	 * Qualify a binding using a marker type
 	 */
-	IBinding ToName<T> ();
+	IBinding ToName<T>();
 
 	/**
 	 * Qualify a binding using a value, such as a string or class instance
@@ -100,19 +100,19 @@ public interface IBinding
 	void RemoveName( object o );
 
 	/// Get the binding''s key
-	object key{ get; }
+	object key { get; }
 
 	/// Get the binding's name
-	object name{ get; }
+	object name { get; }
 
 	/// Get the binding's value
-	object value{ get; }
+	object value { get; }
 
 	/// Get or set a MANY or ONE constraint on the Key
-	Enum keyConstraint{ get; set;}
+	Enum keyConstraint { get; set; }
 
 	/// Get or set a MANY or ONE constraint on the Value
-	Enum valueConstraint{ get; set;}
+	Enum valueConstraint { get; set; }
 
 	//Mark a binding as weak, so that any new binding will override it
 	IBinding Weak();

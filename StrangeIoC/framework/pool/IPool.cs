@@ -47,8 +47,8 @@
  * @see strange.extensions.pool.api.IPoolable for more on cleaning up.
  */
 
-using System;
 using strange.framework.api;
+using System;
 
 namespace strange.extensions.pool.api
 {
@@ -107,14 +107,14 @@ IManagedList
 	/// Gets or sets the overflow behavior of this pool.
 	/// </summary>
 	/// <value>A PoolOverflowBehavior value.</value>
-	PoolOverflowBehavior overflowBehavior{ get; set; }
+	PoolOverflowBehavior overflowBehavior { get; set; }
 
 	/// <summary>
 	/// Gets or sets the type of inflation for infinite-sized pools.
 	/// </summary>
 	/// By default, a pool doubles its InstanceCount.
 	/// <value>A PoolInflationType value.</value>
-	PoolInflationType inflationType{ get; set; }
+	PoolInflationType inflationType { get; set; }
 }
 }
 

@@ -38,10 +38,9 @@
  * relay that Event to other Contexts.
  */
 
-using System;
+using strange.extensions.context.api;
 using strange.extensions.dispatcher.api;
 using strange.extensions.dispatcher.eventdispatcher.api;
-using strange.extensions.context.api;
 using strange.framework.api;
 using strange.framework.impl;
 using System.Collections.Generic;
@@ -51,7 +50,7 @@ namespace strange.extensions.context.impl
 public class CrossContextBridge : Binder, ITriggerable
 {
 	[Inject( ContextKeys.CROSS_CONTEXT_DISPATCHER )]
-	public IEventDispatcher crossContextDispatcher { get; set;}
+	public IEventDispatcher crossContextDispatcher { get; set; }
 
 	/// Prevents the currently dispatching Event from cycling back on itself
 	protected HashSet<object> eventsInProgress = new HashSet<object>();
@@ -60,7 +59,7 @@ public class CrossContextBridge : Binder, ITriggerable
 	{
 	}
 
-	override public IBinding Bind( object key )
+	public override IBinding Bind( object key )
 	{
 		IBinding binding;
 		binding = GetRawBinding();
@@ -71,7 +70,7 @@ public class CrossContextBridge : Binder, ITriggerable
 
 	#region ITriggerable implementation
 
-	public bool Trigger<T> ( object data )
+	public bool Trigger<T>( object data )
 	{
 		return Trigger( typeof( T ), data );
 	}

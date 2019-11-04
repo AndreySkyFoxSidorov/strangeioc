@@ -22,10 +22,10 @@
  * @see strange.extensions.injector.api.IInjectionBinding
  */
 
-using System;
+using strange.extensions.injector.api;
 using strange.framework.api;
 using strange.framework.impl;
-using strange.extensions.injector.api;
+using System;
 
 namespace strange.extensions.injector.impl
 {
@@ -44,23 +44,11 @@ public class InjectionBinding : Binding, IInjectionBinding
 
 	public InjectionBindingType type
 	{
-		get
-		{
-			return _type;
-		}
-		set
-		{
-			_type = value;
-		}
+		get => _type;
+		set => _type = value;
 	}
 
-	public bool toInject
-	{
-		get
-		{
-			return _toInject;
-		}
-	}
+	public bool toInject => _toInject;
 
 	public IInjectionBinding ToInject( bool value )
 	{
@@ -68,13 +56,7 @@ public class InjectionBinding : Binding, IInjectionBinding
 		return this;
 	}
 
-	public bool isCrossContext
-	{
-		get
-		{
-			return _isCrossContext;
-		}
-	}
+	public bool isCrossContext => _isCrossContext;
 
 	public IInjectionBinding ToSingleton()
 	{
@@ -138,9 +120,9 @@ public class InjectionBinding : Binding, IInjectionBinding
 
 	protected bool IsGenericTypeAssignable( Type givenType, Type genericType )
 	{
-		var interfaceTypes = givenType.GetInterfaces();
+		Type[] interfaceTypes = givenType.GetInterfaces();
 
-		foreach( var it in interfaceTypes )
+		foreach( Type it in interfaceTypes )
 		{
 			if( it.IsGenericType && it.GetGenericTypeDefinition() == genericType )
 			{
@@ -172,42 +154,42 @@ public class InjectionBinding : Binding, IInjectionBinding
 		return this;
 	}
 
-	new public IInjectionBinding Bind<T>()
+	public new IInjectionBinding Bind<T>()
 	{
-		return base.Bind<T> () as IInjectionBinding;
+		return base.Bind<T>() as IInjectionBinding;
 	}
 
-	new public IInjectionBinding Bind( object key )
+	public new IInjectionBinding Bind( object key )
 	{
 		return base.Bind( key ) as IInjectionBinding;
 	}
 
-	new public IInjectionBinding To<T>()
+	public new IInjectionBinding To<T>()
 	{
-		return base.To<T> () as IInjectionBinding;
+		return base.To<T>() as IInjectionBinding;
 	}
 
-	new public IInjectionBinding To( object o )
+	public new IInjectionBinding To( object o )
 	{
 		return base.To( o ) as IInjectionBinding;
 	}
 
-	new public IInjectionBinding ToName<T>()
+	public new IInjectionBinding ToName<T>()
 	{
-		return base.ToName<T> () as IInjectionBinding;
+		return base.ToName<T>() as IInjectionBinding;
 	}
 
-	new public IInjectionBinding ToName( object o )
+	public new IInjectionBinding ToName( object o )
 	{
 		return base.ToName( o ) as IInjectionBinding;
 	}
 
-	new public IInjectionBinding Named<T>()
+	public new IInjectionBinding Named<T>()
 	{
-		return base.Named<T> () as IInjectionBinding;
+		return base.Named<T>() as IInjectionBinding;
 	}
 
-	new public IInjectionBinding Named( object o )
+	public new IInjectionBinding Named( object o )
 	{
 		return base.Named( o ) as IInjectionBinding;
 	}

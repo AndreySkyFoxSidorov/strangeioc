@@ -25,7 +25,6 @@
  * - a marker for running multiple commands in parallel (default) or sequentially.
  */
 
-using System;
 using strange.framework.api;
 
 namespace strange.extensions.command.api
@@ -37,7 +36,7 @@ IBinding
 	ICommandBinding Once();
 
 	/// Get/set the property set to `true` by `Once()`
-	bool isOneOff{ get; set;}
+	bool isOneOff { get; set; }
 
 	/// Declares that the bound commands will be run in parallel.
 	/// Parallel is the default. There is no need to call this unless you're changing from sequence.
@@ -50,16 +49,16 @@ IBinding
 	ICommandBinding Pooled();
 
 	/// Get/set the propterty set by InSequence() and InParallel()
-	bool isSequence{ get; set;}
+	bool isSequence { get; set; }
 
 	/// Get/set the propterty set by Pooled()
-	bool isPooled{ get; set;}
+	bool isPooled { get; set; }
 
 	new ICommandBinding Bind<T>();
 	new ICommandBinding Bind( object key );
 	new ICommandBinding To<T>();
 	new ICommandBinding To( object o );
-	new ICommandBinding ToName<T> ();
+	new ICommandBinding ToName<T>();
 	new ICommandBinding ToName( object o );
 	new ICommandBinding Named<T>();
 	new ICommandBinding Named( object o );

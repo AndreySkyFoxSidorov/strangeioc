@@ -33,10 +33,8 @@
  * has no effect on Commands operating in parallel.
  */
 
-using System;
 using strange.extensions.command.api;
 using strange.extensions.injector.api;
-using strange.framework.api;
 using strange.extensions.pool.api;
 
 namespace strange.extensions.command.impl
@@ -45,7 +43,7 @@ public class Command : ICommand, IPoolable
 {
 	/// Back reference to the CommandBinder that instantiated this Commmand
 	[Inject]
-	public ICommandBinder commandBinder { get; set;}
+	public ICommandBinder commandBinder { get; set; }
 
 	/// The InjectionBinder for this Context
 	[Inject]
@@ -67,7 +65,7 @@ public class Command : ICommand, IPoolable
 		IsClean = false;
 	}
 
-	virtual public void Execute()
+	public virtual void Execute()
 	{
 		throw new CommandException( "You must override the Execute method in every Command", CommandExceptionType.EXECUTE_OVERRIDE );
 	}
@@ -87,7 +85,7 @@ public class Command : ICommand, IPoolable
 	}
 
 	/// Use/override this method to clean up the Command for recycling
-	virtual public void Restore()
+	public virtual void Restore()
 	{
 		injectionBinder.injector.Uninject( this );
 		IsClean = true;

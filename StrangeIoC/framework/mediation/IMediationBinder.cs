@@ -62,7 +62,6 @@
  * to mediate.
  */
 
-using System;
 using strange.framework.api;
 using UnityEngine;
 
@@ -76,7 +75,7 @@ IBinder
 	void Trigger( MediationEvent evt, IView view );
 
 	/// Porcelain for Bind<T> providing a little extra clarity and security.
-IMediationBinding BindView<T> () where T :
+IMediationBinding BindView<T>() where T :
 	MonoBehaviour;
 }
 }

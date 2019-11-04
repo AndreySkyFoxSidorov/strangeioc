@@ -20,8 +20,8 @@
  * An exception thrown by the Signal system.
  */
 
-using System;
 using strange.extensions.signal.api;
+using System;
 
 namespace strange.extensions.signal.impl
 {

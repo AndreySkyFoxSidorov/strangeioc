@@ -22,8 +22,8 @@
  * @see strange.framework.api.ISemiBinding
  */
 
-using System;
 using strange.framework.api;
+using System;
 
 namespace strange.framework.impl
 {
@@ -31,8 +31,8 @@ public class SemiBinding : ISemiBinding
 {
 	protected object[] objectValue;
 
-	public Enum constraint { get; set;}
-	public bool uniqueValues { get; set;}
+	public Enum constraint { get; set; }
+	public bool uniqueValues { get; set; }
 
 	public SemiBinding()
 	{
@@ -68,7 +68,7 @@ public class SemiBinding : ISemiBinding
 			objectValue = new object[len + 1];
 			tempList.CopyTo( objectValue, 0 );
 		}
-		objectValue [objectValue.Length - 1] = o;
+		objectValue[objectValue.Length - 1] = o;
 
 		return this;
 	}
@@ -76,7 +76,9 @@ public class SemiBinding : ISemiBinding
 	public IManagedList Add( object[] list )
 	{
 		foreach( object item in list )
-		Add( item );
+		{
+			Add( item );
+		}
 
 		return this;
 	}
@@ -91,7 +93,7 @@ public class SemiBinding : ISemiBinding
 		int aa = objectValue.Length;
 		for( int a = 0; a < aa; a++ )
 		{
-			object currVal = objectValue [a];
+			object currVal = objectValue[a];
 			if( o.Equals( currVal ) )
 			{
 				spliceValueAt( a );
@@ -104,17 +106,19 @@ public class SemiBinding : ISemiBinding
 	public IManagedList Remove( object[] list )
 	{
 		foreach( object item in list )
-		Remove( item );
+		{
+			Remove( item );
+		}
 
 		return this;
 	}
-	virtual public object value
+	public virtual object value
 	{
 		get
 		{
 			if( constraint.Equals( BindingConstraintType.ONE ) )
 			{
-				return ( objectValue == null ) ? null : objectValue [0];
+				return ( objectValue == null ) ? null : objectValue[0];
 			}
 			return objectValue;
 		}
@@ -135,7 +139,7 @@ public class SemiBinding : ISemiBinding
 				mod = -1;
 				continue;
 			}
-			newList [a + mod] = objectValue [a];
+			newList[a + mod] = objectValue[a];
 		}
 		objectValue = ( newList.Length == 0 ) ? null : newList;
 	}

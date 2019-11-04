@@ -34,8 +34,6 @@
  * @see strange.framework.api.IBinding
  */
 
-using System;
-
 namespace strange.framework.api
 {
 public interface IBinder
@@ -47,7 +45,7 @@ public interface IBinder
 	IBinding Bind( object value );
 
 	/// Retrieve a binding based on the provided Type
-	IBinding GetBinding<T> ();
+	IBinding GetBinding<T>();
 
 	/// Retrieve a binding based on the provided object
 	IBinding GetBinding( object key );

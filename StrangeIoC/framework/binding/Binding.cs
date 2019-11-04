@@ -68,92 +68,50 @@ public class Binding : IBinding
 	}
 
 	#region IBinding implementation
-	public object key
-	{
-		get
-		{
-			return _key.value;
-		}
-	}
+	public object key => _key.value;
 
-	public object value
-	{
-		get
-		{
-			return _value.value;
-		}
-	}
+	public object value => _value.value;
 
-	public object name
-	{
-		get
-		{
-			return ( _name.value == null ) ? BindingConst.NULLOID : _name.value;
-		}
-	}
+	public object name => ( _name.value == null ) ? BindingConst.NULLOID : _name.value;
 
 	public Enum keyConstraint
 	{
-		get
-		{
-			return _key.constraint;
-		}
-		set
-		{
-			_key.constraint = value;
-		}
+		get => _key.constraint;
+		set => _key.constraint = value;
 	}
 
 	public Enum valueConstraint
 	{
-		get
-		{
-			return _value.constraint;
-		}
-		set
-		{
-			_value.constraint = value;
-		}
+		get => _value.constraint;
+		set => _value.constraint = value;
 	}
 
 	public Enum nameConstraint
 	{
-		get
-		{
-			return _name.constraint;
-		}
-		set
-		{
-			_name.constraint = value;
-		}
+		get => _name.constraint;
+		set => _name.constraint = value;
 	}
 
 	protected bool _isWeak = false;
-	public bool isWeak
-	{
-		get
-		{
-			return _isWeak;
-		}
-	}
+	public bool isWeak => _isWeak;
 
-	virtual public IBinding Bind<T>()
+	public virtual IBinding Bind<T>()
 	{
 		return Bind( typeof( T ) );
 	}
 
-	virtual public IBinding Bind( object o )
+	public virtual IBinding Bind( object o )
 	{
 		_key.Add( o );
 		return this;
 	}
 
-	virtual public IBinding To<T>()
+	public virtual IBinding To<T>()
 	{
 		return To( typeof( T ) );
 	}
 
-	virtual public IBinding To( object o )
+	public virtual IBinding To( object o )
 	{
 		_value.Add( o );
 		if( resolver != null )
@@ -163,12 +121,12 @@ public class Binding : IBinding
 		return this;
 	}
 
-	virtual public IBinding ToName<T>()
+	public virtual IBinding ToName<T>()
 	{
 		return ToName( typeof( T ) );
 	}
 
-	virtual public IBinding ToName( object o )
+	public virtual IBinding ToName( object o )
 	{
 		object toName = ( o == null ) ? BindingConst.NULLOID : o;
 		_name.Add( toName );
@@ -179,32 +137,32 @@ public class Binding : IBinding
 		return this;
 	}
 
-	virtual public IBinding Named<T>()
+	public virtual IBinding Named<T>()
 	{
 		return Named( typeof( T ) );
 	}
 
-	virtual public IBinding Named( object o )
+	public virtual IBinding Named( object o )
 	{
 		return _name.value == o ? this : null;
 	}
 
-	virtual public void RemoveKey( object o )
+	public virtual void RemoveKey( object o )
 	{
 		_key.Remove( o );
 	}
 
-	virtual public void RemoveValue( object o )
+	public virtual void RemoveValue( object o )
 	{
 		_value.Remove( o );
 	}
 
-	virtual public void RemoveName( object o )
+	public virtual void RemoveName( object o )
 	{
 		_name.Remove( o );
 	}
 
-	virtual public IBinding Weak()
+	public virtual IBinding Weak()
 	{
 		_isWeak = true;
 		return this;

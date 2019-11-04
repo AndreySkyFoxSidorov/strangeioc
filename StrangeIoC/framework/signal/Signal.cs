@@ -116,10 +116,12 @@ public class Signal<T> : BaseSignal
 	{
 		Listener -= callback;
 	}
-	public override  List<Type> GetTypes()
+	public override List<Type> GetTypes()
 	{
-		List<Type> retv = new List<Type>();
-		retv.Add( typeof( T ) );
+		List<Type> retv = new List<Type>
+		{
+			typeof( T )
+		};
 		return retv;
 	}
 	public void Dispatch( T type1 )
@@ -151,9 +153,11 @@ public class Signal<T, U> : BaseSignal
 	}
 	public override List<Type> GetTypes()
 	{
-		List<Type> retv = new List<Type>();
-		retv.Add( typeof( T ) );
-		retv.Add( typeof( U ) );
+		List<Type> retv = new List<Type>
+		{
+			typeof( T ),
+			typeof( U )
+		};
 		return retv;
 	}
 	public void Dispatch( T type1, U type2 )
@@ -185,10 +189,12 @@ public class Signal<T, U, V> : BaseSignal
 	}
 	public override List<Type> GetTypes()
 	{
-		List<Type> retv = new List<Type>();
-		retv.Add( typeof( T ) );
-		retv.Add( typeof( U ) );
-		retv.Add( typeof( V ) );
+		List<Type> retv = new List<Type>
+		{
+			typeof( T ),
+			typeof( U ),
+			typeof( V )
+		};
 		return retv;
 	}
 	public void Dispatch( T type1, U type2, V type3 )
@@ -220,11 +226,13 @@ public class Signal<T, U, V, W> : BaseSignal
 	}
 	public override List<Type> GetTypes()
 	{
-		List<Type> retv = new List<Type>();
-		retv.Add( typeof( T ) );
-		retv.Add( typeof( U ) );
-		retv.Add( typeof( V ) );
-		retv.Add( typeof( W ) );
+		List<Type> retv = new List<Type>
+		{
+			typeof( T ),
+			typeof( U ),
+			typeof( V ),
+			typeof( W )
+		};
 		return retv;
 	}
 	public void Dispatch( T type1, U type2, V type3, W type4 )

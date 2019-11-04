@@ -23,12 +23,12 @@
  * @see strange.extensions.injector.api.IInjectionBinding
  */
 
-using System;
-using System.Collections.Generic;
-using strange.framework.api;
 using strange.extensions.injector.api;
 using strange.extensions.reflector.impl;
+using strange.framework.api;
 using strange.framework.impl;
+using System;
+using System.Collections.Generic;
 
 namespace strange.extensions.injector.impl
 {
@@ -38,9 +38,11 @@ public class InjectionBinder : Binder, IInjectionBinder
 
 	public InjectionBinder()
 	{
-		injector = new Injector();
-		injector.binder = this;
-		injector.reflector = new ReflectionBinder();
+		injector = new Injector
+		{
+			binder = this,
+			reflector = new ReflectionBinder()
+		};
 	}
 
 	public object GetInstance( Type key )
@@ -67,28 +69,25 @@ public class InjectionBinder : Binder, IInjectionBinder
 	public T GetInstance<T>()
 	{
 		object instance = GetInstance( typeof( T ) );
-		T retv = ( T ) instance;
+		T retv = ( T )instance;
 		return retv;
 	}
 
 	public T GetInstance<T>( object name )
 	{
 		object instance = GetInstance( typeof( T ), name );
-		T retv = ( T ) instance;
+		T retv = ( T )instance;
 		return retv;
 	}
 
-	override public IBinding GetRawBinding()
+	public override IBinding GetRawBinding()
 	{
 		return new InjectionBinding( resolver );
 	}
 
 	public IInjector injector
 	{
-		get
-		{
-			return _injector;
-		}
+		get => _injector;
 		set
 		{
 			if( _injector != null )
@@ -100,9 +99,9 @@ public class InjectionBinder : Binder, IInjectionBinder
 		}
 	}
 
-	new public IInjectionBinding Bind<T>()
+	public new IInjectionBinding Bind<T>()
 	{
-		return base.Bind<T> () as IInjectionBinding;
+		return base.Bind<T>() as IInjectionBinding;
 	}
 
 	public IInjectionBinding Bind( Type key )
@@ -110,38 +109,38 @@ public class InjectionBinder : Binder, IInjectionBinder
 		return base.Bind( key ) as IInjectionBinding;
 	}
 
-	new virtual public IInjectionBinding GetBinding<T>()
+	public new virtual IInjectionBinding GetBinding<T>()
 	{
-		return base.GetBinding<T> () as IInjectionBinding;
+		return base.GetBinding<T>() as IInjectionBinding;
 	}
 
 	//SDM2014-0120: "virtual" added as dictated by changes to CrossContextInjectionBinder in relation to the cross-context implicit binding fix
-	new virtual public IInjectionBinding GetBinding<T>( object name )
+	public new virtual IInjectionBinding GetBinding<T>( object name )
 	{
-		return base.GetBinding<T> ( name ) as IInjectionBinding;
+		return base.GetBinding<T>( name ) as IInjectionBinding;
 	}
 
 	//SDM2014-0120: "virtual" added as dictated by changes to CrossContextInjectionBinder in relation to the cross-context implicit binding fix
-	new virtual public IInjectionBinding GetBinding( object key )
+	public new virtual IInjectionBinding GetBinding( object key )
 	{
 		return base.GetBinding( key ) as IInjectionBinding;
 	}
 
-	new virtual public IInjectionBinding GetBinding( object key, object name )
+	public new virtual IInjectionBinding GetBinding( object key, object name )
 	{
 		return base.GetBinding( key, name ) as IInjectionBinding;
 	}
 
 	public int ReflectAll()
 	{
-		List<Type> list = new List<Type> ();
+		List<Type> list = new List<Type>();
 		foreach( KeyValuePair<object, Dictionary<object, IBinding>> pair in bindings )
 		{
 			Dictionary<object, IBinding> dict = pair.Value;
 			foreach( KeyValuePair<object, IBinding> bPair in dict )
 			{
 				IBinding binding = bPair.Value as IBinding;
-				Type t = ( binding.value is Type ) ? ( Type ) binding.value : binding.value.GetType();
+				Type t = ( binding.value is Type ) ? ( Type )binding.value : binding.value.GetType();
 				if( list.IndexOf( t ) == -1 )
 				{
 					list.Add( t );
@@ -157,11 +156,11 @@ public class InjectionBinder : Binder, IInjectionBinder
 		foreach( Type t in list )
 		{
 			//Reflector won't permit primitive types, so screen them
-			if( t.IsPrimitive || t == typeof( Decimal ) || t == typeof( string ) )
+			if( t.IsPrimitive || t == typeof( decimal ) || t == typeof( string ) )
 			{
 				continue;
 			}
-			count ++;
+			count++;
 			injector.reflector.Get( t );
 		}
 		return count;

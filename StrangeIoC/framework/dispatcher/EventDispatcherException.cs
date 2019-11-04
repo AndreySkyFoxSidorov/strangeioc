@@ -20,14 +20,14 @@
  * An exception thrown by the EventDispatcher system.
  */
 
-using System;
 using strange.extensions.dispatcher.eventdispatcher.api;
+using System;
 
 namespace strange.extensions.dispatcher.eventdispatcher.impl
 {
 public class EventDispatcherException : Exception
 {
-	public EventDispatcherExceptionType type { get; set;}
+	public EventDispatcherExceptionType type { get; set; }
 
 	public EventDispatcherException() : base()
 	{

@@ -22,7 +22,6 @@
  * Adds porcelain method to clarify View/Mediator binding.
  */
 
-using System;
 using strange.framework.api;
 
 namespace strange.extensions.mediation.api

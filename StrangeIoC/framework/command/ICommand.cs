@@ -33,8 +33,6 @@
  * has no effect on Commands operating in parallel.
  */
 
-using System;
-
 namespace strange.extensions.command.api
 {
 public interface ICommand
@@ -71,7 +69,7 @@ public interface ICommand
 	object data { get; set; }
 
 	//The ordered id of this Command, used in sequencing to find the next Command.
-	int sequenceId{ get; set; }
+	int sequenceId { get; set; }
 }
 }
 

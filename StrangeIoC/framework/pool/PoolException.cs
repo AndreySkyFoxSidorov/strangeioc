@@ -15,14 +15,14 @@
  */
 
 
-using System;
 using strange.extensions.pool.api;
+using System;
 
 namespace strange.extensions.pool.impl
 {
 public class PoolException : Exception
 {
-	public PoolExceptionType type { get; set;}
+	public PoolExceptionType type { get; set; }
 
 	public PoolException() : base()
 	{

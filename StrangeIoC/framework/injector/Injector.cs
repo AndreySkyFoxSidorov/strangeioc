@@ -37,11 +37,11 @@
  * your app is well structured.
  */
 
+using strange.extensions.injector.api;
+using strange.extensions.reflector.api;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using strange.extensions.injector.api;
-using strange.extensions.reflector.api;
 
 namespace strange.extensions.injector.impl
 {
@@ -55,9 +55,9 @@ public class Injector : IInjector
 		factory = new InjectorFactory();
 	}
 
-	public IInjectorFactory factory { get; set;}
-	public IInjectionBinder binder { get; set;}
-	public IReflectionBinder reflector { get; set;}
+	public IInjectorFactory factory { get; set; }
+	public IInjectionBinder binder { get; set; }
+	public IReflectionBinder reflector { get; set; }
 
 	public object Instantiate( IInjectionBinding binding )
 	{
@@ -76,8 +76,8 @@ public class Injector : IInjector
 		else if( binding.value == null )
 		{
 			object[] tl = binding.key as object[];
-			reflectionType = tl [0] as Type;
-			if( reflectionType.IsPrimitive || reflectionType == typeof( Decimal ) || reflectionType == typeof( string ) )
+			reflectionType = tl[0] as Type;
+			if( reflectionType.IsPrimitive || reflectionType == typeof( decimal ) || reflectionType == typeof( string ) )
 			{
 				retv = binding.value;
 			}
@@ -94,10 +94,10 @@ public class Injector : IInjector
 
 			Type[] parameters = reflection.constructorParameters;
 			int aa = parameters.Length;
-			object[] args = new object [aa];
+			object[] args = new object[aa];
 			for( int a = 0; a < aa; a++ )
 			{
-				args [a] = getValueInjection( parameters[a] as Type, null, null );
+				args[a] = getValueInjection( parameters[a] as Type, null, null );
 			}
 			retv = factory.Get( binding, args );
 
@@ -135,7 +135,7 @@ public class Injector : IInjector
 
 		//Some things can't be injected into. Bail out.
 		Type t = target.GetType();
-		if( t.IsPrimitive || t == typeof( Decimal ) || t == typeof( string ) )
+		if( t.IsPrimitive || t == typeof( decimal ) || t == typeof( string ) )
 		{
 			return target;
 		}
@@ -158,7 +158,7 @@ public class Injector : IInjector
 		failIf( target == null, "Attempt to inject into null instance", InjectionExceptionType.NULL_TARGET );
 
 		Type t = target.GetType();
-		if( t.IsPrimitive || t == typeof( Decimal ) || t == typeof( string ) )
+		if( t.IsPrimitive || t == typeof( decimal ) || t == typeof( string ) )
 		{
 			return;
 		}
@@ -202,7 +202,7 @@ public class Injector : IInjector
 		int aa = reflection.setters.Length;
 		for( int a = 0; a < aa; a++ )
 		{
-			KeyValuePair<Type, PropertyInfo> pair = reflection.setters [a];
+			KeyValuePair<Type, PropertyInfo> pair = reflection.setters[a];
 			object value = getValueInjection( pair.Key, reflection.setterNames[a], target );
 			injectValueIntoPoint( value, target, pair.Value );
 		}
@@ -239,6 +239,8 @@ public class Injector : IInjector
 		}
 	}
 
+
+
 	//Inject the value into the target at the specified injection point
 	private void injectValueIntoPoint( object value, object target, PropertyInfo point )
 	{
@@ -246,7 +248,24 @@ public class Injector : IInjector
 		failIf( point == null, "Attempt to inject into a null point", InjectionExceptionType.NULL_INJECTION_POINT );
 		failIf( value == null, "Attempt to inject null into a target object", InjectionExceptionType.NULL_VALUE_INJECTION );
 
-		point.SetValue( target, value, null );
+		//   pointPI.SetValue(target, value, null);
+		Injector.SetPropertyValue( target, point.Name, value );
+	}
+
+	private static void SetPropertyValue( object parent, string propertyName, object value )
+	{
+		Type inherType = parent.GetType();
+		while( inherType != null )
+		{
+			PropertyInfo propToSet = inherType.GetProperty( propertyName, BindingFlags.Public | BindingFlags.Instance );
+			if( propToSet != null && propToSet.CanWrite )
+			{
+				propToSet.SetValue( parent, value, null );
+				break;
+			}
+
+			inherType = inherType.BaseType;
+		}
 	}
 
 	//After injection, call any methods labelled with the [PostConstruct] tag
@@ -271,10 +290,14 @@ public class Injector : IInjector
 		int aa = reflection.setters.Length;
 		for( int a = 0; a < aa; a++ )
 		{
-			KeyValuePair<Type, PropertyInfo> pair = reflection.setters [a];
-			pair.Value.SetValue( target, null, null );
+			KeyValuePair<Type, PropertyInfo> pair = reflection.setters[a];
+			Injector.SetPropertyValue( target, pair.Value.Name, null );
+			//   pair.Value.SetValue( target, null, null );
 		}
 	}
+
+
+
 
 	private void failIf( bool condition, string message, InjectionExceptionType type )
 	{
@@ -305,14 +328,14 @@ public class Injector : IInjector
 		}
 		if( infinityLock == null )
 		{
-			infinityLock = new Dictionary<IInjectionBinding, int> ();
+			infinityLock = new Dictionary<IInjectionBinding, int>();
 		}
 		if( infinityLock.ContainsKey( binding ) == false )
 		{
 			infinityLock.Add( binding, 0 );
 		}
-		infinityLock [binding] = infinityLock [binding] + 1;
-		if( infinityLock [binding] > INFINITY_LIMIT )
+		infinityLock[binding] = infinityLock[binding] + 1;
+		if( infinityLock[binding] > INFINITY_LIMIT )
 		{
 			throw new InjectionException( "There appears to be a circular dependency. Terminating loop.", InjectionExceptionType.CIRCULAR_DEPENDENCY );
 		}

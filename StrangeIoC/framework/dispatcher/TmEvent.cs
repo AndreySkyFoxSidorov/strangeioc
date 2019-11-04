@@ -56,9 +56,9 @@ public class TmEvent : IEvent, IPoolable
 
 	public void Restore()
 	{
-		this.type = null;
-		this.target = null;
-		this.data = null;
+		type = null;
+		target = null;
+		data = null;
 	}
 
 	public void Retain()
@@ -77,13 +77,7 @@ public class TmEvent : IEvent, IPoolable
 		}
 	}
 
-	public bool retain
-	{
-		get
-		{
-			return retainCount > 0;
-		}
-	}
+	public bool retain => retainCount > 0;
 
 	#endregion
 }

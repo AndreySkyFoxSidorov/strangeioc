@@ -28,8 +28,6 @@
  * @see strange.extensions.dispatcher.api.ITriggerable
  */
 
-using System;
-
 namespace strange.extensions.dispatcher.api
 {
 public interface ITriggerProvider
@@ -41,7 +39,7 @@ public interface ITriggerProvider
 	void RemoveTriggerable( ITriggerable target );
 
 	/// Count of the current number of trigger clients.
-	int Triggerables{ get;}
+	int Triggerables { get; }
 }
 }
 

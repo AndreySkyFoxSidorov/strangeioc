@@ -27,7 +27,6 @@
  */
 
 using System;
-using strange.framework.api;
 
 namespace strange.extensions.reflector.api
 {
@@ -37,7 +36,7 @@ public interface IReflectionBinder
 	IReflectedClass Get( Type type );
 
 	/// Get a binding based on the provided Type generic.
-	IReflectedClass Get<T> ();
+	IReflectedClass Get<T>();
 }
 }
 

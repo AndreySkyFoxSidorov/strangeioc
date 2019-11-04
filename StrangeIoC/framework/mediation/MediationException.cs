@@ -20,14 +20,14 @@
  * An exception thrown by the Mediation system
  */
 
-using System;
 using strange.extensions.mediation.api;
+using System;
 
 namespace strange.extensions.mediation.impl
 {
 public class MediationException : Exception
 {
-	public MediationExceptionType type { get; set;}
+	public MediationExceptionType type { get; set; }
 
 	public MediationException() : base()
 	{

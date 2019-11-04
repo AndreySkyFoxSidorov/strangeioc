@@ -23,10 +23,10 @@
  * critical moments occur in the View lifecycle.
  */
 
-using UnityEngine;
 using strange.extensions.context.api;
 using strange.extensions.context.impl;
 using strange.extensions.mediation.api;
+using UnityEngine;
 
 namespace strange.extensions.mediation.impl
 {
@@ -38,14 +38,8 @@ public class View : MonoBehaviour, IView
 	private bool _requiresContext = true;
 	public bool requiresContext
 	{
-		get
-		{
-			return _requiresContext;
-		}
-		set
-		{
-			_requiresContext = value;
-		}
+		get => _requiresContext;
+		set => _requiresContext = value;
 	}
 
 	/// A flag for allowing the View to register with the Context
@@ -56,13 +50,13 @@ public class View : MonoBehaviour, IView
 	/// (2) subclass View and override the autoRegisterWithContext method using your own custom (public) field.
 	//[SerializeField]
 	protected bool registerWithContext = true;
-	virtual public bool autoRegisterWithContext
+	public virtual bool autoRegisterWithContext
 	{
-		get { return registerWithContext;  }
-		set { registerWithContext = value; }
+		get => registerWithContext;
+		set => registerWithContext = value;
 	}
 
-	public bool registeredWithContext {get; set;}
+	public bool registeredWithContext { get; set; }
 
 	/// A MonoBehaviour Awake handler.
 	/// The View will attempt to connect to the Context at this moment.
@@ -96,14 +90,14 @@ public class View : MonoBehaviour, IView
 	/// Recurses through Transform.parent to find the GameObject to which ContextView is attached
 	/// Has a loop limit of 100 levels.
 	/// By default, raises an Exception if no Context is found.
-	virtual protected void bubbleToContext( MonoBehaviour view, bool toAdd, bool finalTry )
+	protected virtual void bubbleToContext( MonoBehaviour view, bool toAdd, bool finalTry )
 	{
 		const int LOOP_MAX = 100;
 		int loopLimiter = 0;
 		Transform trans = view.gameObject.transform;
 		while( trans.parent != null && loopLimiter < LOOP_MAX )
 		{
-			loopLimiter ++;
+			loopLimiter++;
 			trans = trans.parent;
 			if( trans.gameObject.GetComponent<ContextView>() != null )
 			{

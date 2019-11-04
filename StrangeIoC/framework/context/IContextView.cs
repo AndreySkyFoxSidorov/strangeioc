@@ -24,7 +24,6 @@
  * It's most important role is to instantiate and call `Start()` on the Context.
  */
 
-using System;
 using strange.extensions.mediation.api;
 
 namespace strange.extensions.context.api
@@ -33,7 +32,7 @@ public interface IContextView :
 IView
 {
 	/// Get and set the Context
-	IContext context{get; set;}
+	IContext context { get; set; }
 }
 }
 

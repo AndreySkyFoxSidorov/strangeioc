@@ -23,7 +23,6 @@
  * perfectly to Binding.
  */
 
-using System;
 using strange.extensions.mediation.api;
 using strange.framework.impl;
 
@@ -35,7 +34,7 @@ public class MediationBinding : Binding, IMediationBinding
 	{
 	}
 
-	IMediationBinding IMediationBinding.ToMediator<T> ()
+	IMediationBinding IMediationBinding.ToMediator<T>()
 	{
 		return base.To( typeof( T ) ) as IMediationBinding;
 	}

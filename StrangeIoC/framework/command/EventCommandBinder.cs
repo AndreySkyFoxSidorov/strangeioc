@@ -20,7 +20,6 @@
  * A subclass of CommandBinder which relies on an IEventDispatcher as the common system bus.
  */
 
-using System;
 using strange.extensions.command.api;
 using strange.extensions.dispatcher.eventdispatcher.api;
 using strange.extensions.pool.api;
@@ -34,15 +33,15 @@ public class EventCommandBinder : CommandBinder
 	}
 
 	///
-	override protected ICommand createCommand( object cmd, object data )
+	protected override ICommand createCommand( object cmd, object data )
 	{
-		injectionBinder.Bind<ICommand> ().To( cmd );
+		injectionBinder.Bind<ICommand>().To( cmd );
 		if( data is IEvent )
 		{
 			injectionBinder.Bind<IEvent>().ToValue( data ).ToInject( false );
 		}
 
-		ICommand command = injectionBinder.GetInstance<ICommand> () as ICommand;
+		ICommand command = injectionBinder.GetInstance<ICommand>() as ICommand;
 		if( command == null )
 		{
 			string msg = "A Command ";
@@ -60,11 +59,11 @@ public class EventCommandBinder : CommandBinder
 		{
 			injectionBinder.Unbind<IEvent>();
 		}
-		injectionBinder.Unbind<ICommand> ();
+		injectionBinder.Unbind<ICommand>();
 		return command;
 	}
 
-	override protected void disposeOfSequencedData( object data )
+	protected override void disposeOfSequencedData( object data )
 	{
 		if( data is IPoolable )
 		{

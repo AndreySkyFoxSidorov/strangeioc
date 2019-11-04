@@ -20,14 +20,14 @@
  * An exception thrown by the Injection system.
  */
 
-using System;
 using strange.extensions.injector.api;
+using System;
 
 namespace strange.extensions.injector.impl
 {
 public class InjectionException : Exception
 {
-	public InjectionExceptionType type { get; set;}
+	public InjectionExceptionType type { get; set; }
 
 	public InjectionException() : base()
 	{

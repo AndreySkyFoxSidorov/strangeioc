@@ -23,13 +23,12 @@
  * and caches the result, meaning that Reflection is performed only once per class.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Reflection;
 using strange.extensions.reflector.api;
 using strange.framework.api;
-using strange.framework.impl;
+using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace strange.extensions.reflector.impl
 {
@@ -39,7 +38,7 @@ public class ReflectionBinder : strange.framework.impl.Binder, IReflectionBinder
 	{
 	}
 
-	public IReflectedClass Get<T> ()
+	public IReflectedClass Get<T>()
 	{
 		return Get( typeof( T ) );
 	}
@@ -89,7 +88,7 @@ public class ReflectionBinder : strange.framework.impl.Binder, IReflectionBinder
 		foreach( ParameterInfo param in parameters )
 		{
 			Type paramType = param.ParameterType;
-			paramList [i] = paramType;
+			paramList[i] = paramType;
 			i++;
 		}
 		reflected.Constructor = constructor;
@@ -108,7 +107,7 @@ public class ReflectionBinder : strange.framework.impl.Binder, IReflectionBinder
 										 BindingFlags.InvokeMethod );
 		if( constructors.Length == 1 )
 		{
-			return constructors [0];
+			return constructors[0];
 		}
 		int len;
 		int shortestLen = int.MaxValue;
@@ -183,10 +182,10 @@ public class ReflectionBinder : strange.framework.impl.Binder, IReflectionBinder
 			object[] injections = member.GetCustomAttributes( typeof( Inject ), true );
 			if( injections.Length > 0 )
 			{
-				Inject attr = injections [0] as Inject;
+				Inject attr = injections[0] as Inject;
 				PropertyInfo point = member as PropertyInfo;
 				Type pointType = point.PropertyType;
-				KeyValuePair<Type, PropertyInfo> pair = new KeyValuePair<Type, PropertyInfo> ( pointType, point );
+				KeyValuePair<Type, PropertyInfo> pair = new KeyValuePair<Type, PropertyInfo>( pointType, point );
 				pairs = AddKV( pair, pairs );
 
 				object bindingName = attr.name;
@@ -206,27 +205,27 @@ public class ReflectionBinder : strange.framework.impl.Binder, IReflectionBinder
 		int len = tempList.Length;
 		list = new object[len + 1];
 		tempList.CopyTo( list, 0 );
-		list [len] = value;
+		list[len] = value;
 		return list;
 	}
 
 	/**
 	 * Add an item to a list
 	 */
-	private  KeyValuePair<Type,PropertyInfo>[] AddKV( KeyValuePair<Type,PropertyInfo> value, KeyValuePair<Type,PropertyInfo>[] list )
+	private KeyValuePair<Type, PropertyInfo>[] AddKV( KeyValuePair<Type, PropertyInfo> value, KeyValuePair<Type, PropertyInfo>[] list )
 	{
-		KeyValuePair<Type,PropertyInfo>[] tempList = list;
+		KeyValuePair<Type, PropertyInfo>[] tempList = list;
 		int len = tempList.Length;
-		list = new KeyValuePair<Type,PropertyInfo>[len + 1];
+		list = new KeyValuePair<Type, PropertyInfo>[len + 1];
 		tempList.CopyTo( list, 0 );
-		list [len] = value;
+		list[len] = value;
 		return list;
 	}
 }
 
-class PriorityComparer : IComparer
+internal class PriorityComparer : IComparer
 {
-	int IComparer.Compare( Object x, Object y )
+	int IComparer.Compare( object x, object y )
 	{
 
 		int pX = getPriority( x as MethodInfo );
@@ -237,7 +236,7 @@ class PriorityComparer : IComparer
 
 	private int getPriority( MethodInfo methodInfo )
 	{
-		PostConstruct attr = methodInfo.GetCustomAttributes( true ) [0] as PostConstruct;
+		PostConstruct attr = methodInfo.GetCustomAttributes( true )[0] as PostConstruct;
 		int priority = attr.priority;
 		return priority;
 	}

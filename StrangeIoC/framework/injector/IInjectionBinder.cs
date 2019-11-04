@@ -57,9 +57,9 @@
  * @see strange.extensions.injector.api.IInjectionBinding
  */
 
+using strange.framework.api;
 using System;
 using System.Collections.Generic;
-using strange.framework.api;
 
 namespace strange.extensions.injector.api
 {
@@ -67,7 +67,7 @@ public interface IInjectionBinder :
 IInstanceProvider
 {
 	/// Get or set an Injector to use. By default, Injector instantiates it's own, but that can be overridden.
-	IInjector injector{ get; set;}
+	IInjector injector { get; set; }
 
 	/// Retrieve an Instance based on a key/name combo.
 	/// ex. `injectionBinder.Get(typeof(ISomeInterface), SomeEnum.MY_ENUM);`

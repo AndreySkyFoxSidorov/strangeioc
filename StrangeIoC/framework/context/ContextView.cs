@@ -33,15 +33,14 @@
 
  */
 
-using System;
-using UnityEngine;
 using strange.extensions.context.api;
+using UnityEngine;
 
 namespace strange.extensions.context.impl
 {
 public class ContextView : MonoBehaviour, IContextView
 {
-	public IContext context {get; set;}
+	public IContext context { get; set; }
 
 	public ContextView()
 	{
@@ -60,9 +59,9 @@ public class ContextView : MonoBehaviour, IContextView
 
 	#region IView implementation
 
-	public bool requiresContext {get; set;}
+	public bool requiresContext { get; set; }
 
-	public bool registeredWithContext {get; set;}
+	public bool registeredWithContext { get; set; }
 
 	public bool autoRegisterWithContext { get; set; }
 
