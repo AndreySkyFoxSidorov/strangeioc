@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <EnableDefaultItems>false</EnableDefaultItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="../StrangeIoC/framework/pool/**/*.cs" />
+    <Compile Include="../StrangeIoC/framework/binding/**/*.cs" />
+    <Compile Include="../StrangeIoC/framework/injector/**/*.cs" />
+    <Compile Include="../StrangeIoC/framework/reflector/**/*.cs" />
+    <Compile Include="UnityEngine/Debug.cs" />
+    <Compile Remove="Class1.cs" />
+  </ItemGroup>
+
+</Project>
