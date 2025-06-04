@@ -20,5 +20,9 @@ std::string Binder::Get(const std::string& key) const {
     return std::string();
 }
 
+void Binder::Unbind(const std::string& key) {
+    bindings_.erase(key);
+}
+
 }
 }

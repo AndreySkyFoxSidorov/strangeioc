@@ -16,6 +16,7 @@ public:
     std::shared_ptr<Binding> Bind(const std::string& key);
     void Register(const Binding& binding);
     std::string Get(const std::string& key) const;
+    void Unbind(const std::string& key);
 };
 
 }
