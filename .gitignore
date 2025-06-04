@@ -24,3 +24,6 @@ sysinfo.txt
 *.gd
 *.gd.meta
 *.orig
+*.vcxproj
+*.vcxproj*
+*.sln

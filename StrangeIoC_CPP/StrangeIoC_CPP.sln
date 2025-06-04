@@ -1,0 +1,15 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31005.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{BC8A1FFA-BEE3-4634-8014-F334798102B3}") = "StrangeIoC_CPP", "StrangeIoC_CPP.vcxproj", "{41A96A05-3BF7-43AE-B921-F110B9E3C753}"
+EndProject
+Global
+GlobalSection(SolutionConfigurationPlatforms) = preSolution
+Debug|x64 = Debug|x64
+EndGlobalSection
+GlobalSection(ProjectConfigurationPlatforms) = postSolution
+{41A96A05-3BF7-43AE-B921-F110B9E3C753}.Debug|x64.ActiveCfg = Debug|x64
+{41A96A05-3BF7-43AE-B921-F110B9E3C753}.Debug|x64.Build.0 = Debug|x64
+EndGlobalSection
+EndGlobal
