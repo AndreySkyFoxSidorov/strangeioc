@@ -107,16 +107,16 @@ public class InjectionBinding : Binding, IInjectionBinding
 		return this;
 	}
 
-	protected bool HasGenericAssignableFrom( Type keyType, Type objType )
-	{
-		//FIXME: We need to figure out how to determine generic assignability
-		if( keyType.IsGenericType == false )
-		{
-			return false;
-		}
+       protected bool HasGenericAssignableFrom( Type keyType, Type objType )
+       {
+               if( !keyType.IsGenericType )
+               {
+                       return false;
+               }
 
-		return true;
-	}
+               Type generic = keyType.IsGenericTypeDefinition ? keyType : keyType.GetGenericTypeDefinition();
+               return IsGenericTypeAssignable( objType, generic );
+       }
 
 	protected bool IsGenericTypeAssignable( Type givenType, Type genericType )
 	{
