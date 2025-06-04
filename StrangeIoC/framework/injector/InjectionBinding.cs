@@ -109,15 +109,11 @@ public class InjectionBinding : Binding, IInjectionBinding
 
        protected bool HasGenericAssignableFrom( Type keyType, Type objType )
        {
-               if( keyType.IsGenericType == false )
-               {
-                       return false;
-               }
-
                //If the key is an open generic type, compare against its definition
                Type genericDefinition = keyType.IsGenericTypeDefinition ? keyType : keyType.GetGenericTypeDefinition();
 
                return IsGenericTypeAssignable( objType, genericDefinition );
+
        }
 
 	protected bool IsGenericTypeAssignable( Type givenType, Type genericType )
