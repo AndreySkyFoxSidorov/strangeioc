@@ -27,6 +27,16 @@ public:
         return nullptr;
     }
 
+    template<typename T>
+    void Unbind() {
+        creators_.erase(std::type_index(typeid(T)));
+    }
+
+    template<typename T>
+    bool Has() const {
+        return creators_.find(std::type_index(typeid(T))) != creators_.end();
+    }
+
 private:
     std::unordered_map<std::type_index, std::function<std::shared_ptr<void>()>> creators_;
 };
