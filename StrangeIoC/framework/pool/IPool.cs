@@ -95,7 +95,7 @@ IManagedList
 	/// <summary>
 	/// Gets or sets the size of the pool.
 	/// </summary>
-	/// <value>The pool size. '0' is a special value indicating infinite size. Infinite pools expand as necessary to accomodate requirement.</value>
+       /// <value>The pool size. '0' is a special value indicating infinite size. Infinite pools expand as necessary to accommodate requirement.</value>
 	int size { get; set; }
 
 	/// <summary>
