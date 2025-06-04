@@ -37,7 +37,7 @@
  * View shows up, a corresponding Mediator joins it to buffer
  * View from app. The View doesn't know about the Mediator, nor
  * about the app beyond it. It simply establishes its API and waits
- * tp be told what to do. The Mediator, on the other hand, is allowed
+ * to be told what to do. The Mediator, on the other hand, is allowed
  * to know quite a lot about the View and the app. It can be injected,
  * it has access to the common event bus, and can listen for and Dispatch
  * events. It is intended to be 'thin', that is, it should know just
@@ -46,7 +46,7 @@
  *
  * In the context of Unity3D, the View is a MonoBehaviour attached
  * to a GameObject. The mediator is also a MonoBehaviour, so it has access
- * to all the usual things a MomoBehaviour would. Consider it a best
+ * to all the usual things a MonoBehaviour would. Consider it a best
  * practice to attach only the View to your GameObject in Unity3D.
  *
  * Finally, two words of warning.
